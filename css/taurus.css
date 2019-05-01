@@ -1487,7 +1487,7 @@ html {
 .page .article-toc {
   position: fixed;
   top: 10em;
-  left: 25vw;
+  left: 80vw;
   background-color: #fff;
   z-index: 101;
 }
