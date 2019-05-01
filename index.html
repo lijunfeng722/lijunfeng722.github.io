@@ -83,7 +83,7 @@
 		
 		<div class="header-logo">
 			<a href="/">
-				<img src="/images/theme-icon.svg">
+				<img src="https://avatars2.githubusercontent.com/u/12017992?s=400&u=722ebc8cc275146695a49b651b96e4eb89a182c1&v=4">
 			</a>
 		</div>
 		<div class="header-text">
@@ -109,8 +109,8 @@
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="归档">
-			<img src="/images/icons/blue-shadow/archive.svg" alt>
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
 	</div>
@@ -118,15 +118,15 @@
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="搜索">
-			<img src="/images/icons/blue-shadow/search.svg" alt>
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
 	</div>
 	<div class="nav-item" id="nav-item-more">
 		<div class="nav-icon">
 				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
-				<img src="/images/icons/blue-shadow/menu.svg" alt>
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
 				</a>
 		</div>
 		<div class="nav-more-menu">
@@ -155,7 +155,7 @@
 
 <div class="index-container" id="/index.html" data-name="index" data-version="2.1.3">
 	<div class="index-intro">
-		ABC
+		
 	</div>
 	
 		<div class="grid-2_md-1 grid-equalHeight index-cards">
@@ -224,6 +224,14 @@
 						</li>
 						
 						
+						<li class="card-comment">
+							<a href="/2019/04/30/hello-world/#article-comment">
+								<i class="fa fa-comments"></i> <span class="card-comment-count">0</span>
+							</a>
+						</li>
+						<li class="card-visitor"><i class="fa fa-eye"></i> <span class="card-visit-count">0</span></li>
+						<li class="card-thumbup-container"><i class="far fa-thumbs-up"></i> <span class="card-thumbup-count">0</span></li>
+						
 						
 				</ul>
 			</div>
@@ -261,12 +269,18 @@
 <footer id="footer">
     <div class="footer-copyright">
         <div>
-            <p> 版权所有 <a href>Li JunFeng </a> @ 2019</p>
-            <p>设计: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> 和 <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; 主题: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; 由 <a href="http://hexo.io">Hexo.</a> 强力驱动</p>
+            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
         </div>
     </div>
     
     <div class="footer-social">
+        
+            
+                
+                    <div class="footer-social-item"><a href="https://github.com/lijunfeng722" target="_blank"><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
         
     </div>
 </footer>
@@ -286,8 +300,8 @@
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="归档">
-			<img src="/images/icons/blue-shadow/archive.svg" alt>
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
 	</div>
@@ -295,15 +309,15 @@
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="搜索">
-			<img src="/images/icons/blue-shadow/search.svg" alt>
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
 	</div>
 	<div class="nav-item" id="nav-item-more">
 		<div class="nav-icon">
 				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
-				<img src="/images/icons/blue-shadow/menu.svg" alt>
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
 				</a>
 		</div>
 		<div class="nav-more-menu">
@@ -321,26 +335,29 @@
 
 
     
-
-
-
-
-
-
-
-    <script src="/js/lightgallery.min.js"></script>
-<script src="/js/lg-zoom.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#lightgallery").lightGallery(); 
-        $(".article-content img").each(function(){
-            console.log($(this).attr('src'))
-            $(this).attr('data-src', $(this).attr('src')).lightGallery({
-                selector: 'this'
-            })
-        });
+    
+    
+    
+<script>
+    new Valine({
+        el: '#valine',
+        notify:false, 
+        verify:false,
+        appId: 'V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz',
+        appKey: 'rWMxYnrvsMGqWwJFbczwXkPY',
+        placeholder: 'write your comment',
+        path:window.location.pathname, 
+        avatar:'retro',
+        lang: 'en'
     });
 </script>
+
+
+
+
+
+
+
 
 
 
@@ -369,6 +386,55 @@
 </script>
 
 
+    
+<script type="text/javascript">
+  
+    function getIP(json) {
+      loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/leancloud.js'], 'post-visit-comment-count');
+    loadjs.ready('post-visit-comment-count', {
+      success: function(){
+          LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+          var leanCloud = LeanCloud.getInstance();
+        
+          
+          
+          // start caching post visit and comment counts
+          leanCloud.fetchIsThumbUp('/2019/04/30/hello-world/', json.ip);
+          leanCloud.fetchCommentCount('/2019/04/30/hello-world/');
+          leanCloud.fetchVisitCount('/2019/04/30/hello-world/');
+          leanCloud.fetchThumbUpCount('/2019/04/30/hello-world/');
+          leanCloud.getCommentCount('/2019/04/30/hello-world/', function(count){
+              var el = document.querySelector('#hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e .card-comment-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getVisitCount('/2019/04/30/hello-world/', function(count){
+              var el = document.querySelector('#hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e .card-visit-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getThumbUpCount('/2019/04/30/hello-world/', function(count){
+              var el = document.querySelector('#hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e .card-thumbup-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.isThumbUp('/2019/04/30/hello-world/', function(isThumbUp){
+              var el = document.querySelector('#hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e .card-thumbup-container i');
+              if(el){
+                if(isThumbUp){
+                  el.className = 'fas fa-thumbs-up';
+                }else{
+                  el.className = 'far fa-thumbs-up';
+                }
+              }
+          });
+        
+      }
+    })
+    }
+  
+</script>
+
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
+
 
 <!-- <script src="/js/post.js"></script> -->
 
@@ -381,7 +447,7 @@ initHeadroom();
 changeLayoutOnTouchScreen();
 
 // 
-// var post = new Post('', '');
+// var post = new Post('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
 // console.log(post);
 // $('.Card').each(function(){
 //     var post_url = $(this).attr('id');
