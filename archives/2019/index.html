@@ -162,6 +162,56 @@
 
 
 
+<div class="Card-archive" id="hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013" data-name="1st Post" data-version>
+	<mark class="Card-badge"></mark>
+	<div class="Card-body">
+		<h3 class="Card-title">
+			
+				<a href="/2019/05/01/1st-Post/">
+			
+			1st Post</a>
+		</h3>
+		<div class="Card-meta">
+			<div class="Card-tags">
+<div class="tags">
+	
+		
+			
+				<label class="tag-1"><a href="/tags/hexo/">Hexo</a></label>
+			
+		
+	
+	</div>
+</div>
+			<ul>
+					<li>
+						<a href="/archives/">
+							<i class="fa fa-calendar"></i> 2019-05-01
+						</a>
+					</li>
+					
+					
+					<li>
+						<a href="/2019/05/01/1st-Post/#article-comment">
+							<i class="fa fa-comments"></i> <span class="card-comment-count">0</span>
+						</a>
+					</li>
+					<li>
+						<i class="fa fa-eye"></i> <span class="card-visit-count">0</span>
+					</li>
+					
+					
+			</ul>
+		</div>
+	</div>
+</div>
+
+	
+		
+
+
+
+
 <div class="Card-archive" id="hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e" data-name="Hello World" data-version>
 	<mark class="Card-badge"></mark>
 	<div class="Card-body">
@@ -172,7 +222,23 @@
 			Hello World</a>
 		</h3>
 		<div class="Card-meta">
-			<div class="Card-tags"></div>
+			<div class="Card-tags">
+<div class="tags">
+	
+		
+			
+				<label class="tag-1"><a href="/tags/gihub-pages/">Gihub pages</a></label>
+			
+		
+	
+		
+			
+				<label class="tag-2"><a href="/tags/hexo/">Hexo</a></label>
+			
+		
+	
+	</div>
+</div>
 			<ul>
 					<li>
 						<a href="/archives/">
@@ -315,6 +381,14 @@
           
           
           
+            var postBadge = document.querySelector('#hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013 mark.Card-badge');
+            $(postBadge).fadeOut();
+            
+          
+        
+          
+          
+          
             var postBadge = document.querySelector('#hashit_2527019bfba398ff4edd880140c7d7ec6ef57d5e1f326eb74121b051385fdb3e mark.Card-badge');
             $(postBadge).fadeOut();
             
@@ -335,6 +409,36 @@
       success: function(){
           LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
           var leanCloud = LeanCloud.getInstance();
+        
+          
+          
+          // start caching post visit and comment counts
+          leanCloud.fetchIsThumbUp('/2019/05/01/1st-Post/', json.ip);
+          leanCloud.fetchCommentCount('/2019/05/01/1st-Post/');
+          leanCloud.fetchVisitCount('/2019/05/01/1st-Post/');
+          leanCloud.fetchThumbUpCount('/2019/05/01/1st-Post/');
+          leanCloud.getCommentCount('/2019/05/01/1st-Post/', function(count){
+              var el = document.querySelector('#hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013 .card-comment-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getVisitCount('/2019/05/01/1st-Post/', function(count){
+              var el = document.querySelector('#hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013 .card-visit-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getThumbUpCount('/2019/05/01/1st-Post/', function(count){
+              var el = document.querySelector('#hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013 .card-thumbup-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.isThumbUp('/2019/05/01/1st-Post/', function(isThumbUp){
+              var el = document.querySelector('#hashit_5584a5cdf2f72a42ba81fe5af4eb5b49947c5ec90b47393c424d29a23818d013 .card-thumbup-container i');
+              if(el){
+                if(isThumbUp){
+                  el.className = 'fas fa-thumbs-up';
+                }else{
+                  el.className = 'far fa-thumbs-up';
+                }
+              }
+          });
         
           
           
