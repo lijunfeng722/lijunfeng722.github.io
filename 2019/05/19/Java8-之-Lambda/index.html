@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+      <title>Java8 之 Lambda - HeiHeiHei</title>
+  
+
+  
+  
+  <meta name="description" content>
+  <meta name="author" content="Li JunFeng">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- load loadjs.js -->
+  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
+
+<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
+  <!-- load lightgallery -->
+<link rel="stylesheet" href="/css/lightgallery.css">
+<link rel="stylesheet" href="/libs/noty/lib/noty.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
+    
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
+
+
+<link rel="stylesheet" href="/.css">
+
+  <!-- load font awesome 5 -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <!-- load mathjax -->
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <!-- load js-cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+ 
+
+<header id="header" class="header">
+	<div class="header-title">
+		
+		<div class="header-logo">
+			<a href="/">
+				<img src="https://avatars2.githubusercontent.com/u/12017992?s=400&u=722ebc8cc275146695a49b651b96e4eb89a182c1&v=4">
+			</a>
+		</div>
+		<div class="header-text">
+			<h1>
+				<a href="/">HeiHeiHei</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id="header-nav">
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口-functionalinterface"><span class="toc-number">2.</span> <span class="toc-text">函数式接口 @FunctionalInterface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传递行为-而不是传递值"><span class="toc-number">3.</span> <span class="toc-text">传递行为，而不是传递值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda书写语法"><span class="toc-number">4.</span> <span class="toc-text">lambda书写语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用"><span class="toc-number">5.</span> <span class="toc-text">方法引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶：复合lambda"><span class="toc-number">6.</span> <span class="toc-text">进阶：复合lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda的注意事项"><span class="toc-number">7.</span> <span class="toc-text">lambda的注意事项</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#测验"><span class="toc-number"></span> <span class="toc-text">测验</span></a>
+</li></div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+</header>
+
+ 
+
+  
+
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+    
+        
+            
+            
+        
+    
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2019/05/19/Java8-之-Lambda/" data-name="Java8 之 Lambda" data-version>
+
+    <!-- Title -->
+    <div class="article-header">
+         
+         <div class="article-logo">
+            <a href="#" data-no-instant>
+                <img src="/images/icon/Java.svg" alt onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" ">
+            </a>
+         </div>
+         
+         <h1 class="article-title">
+            <a href="/2019/05/19/Java8-之-Lambda/">
+                Java8 之 Lambda
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+        <ul class="article-categories">
+            
+            
+                <li><a href="/categories/Java/" data-no-instant>
+                    <img src="/images/Java.svg" alt="Java" onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" " title="Java">
+                </a></li>
+            
+        </ul>
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class="article-meta">
+    <ul>
+            <li><i class="fa fa-calendar"></i> 2019-05-19</li>
+            
+            <li class="comment-button"><a href="#article-comment"><i class="fa fa-comments"></i> <span id="article-comment-count">0</span></a></li>
+            <li><i class="fa fa-eye"></i> <span id="article-visit-count">0</span></li>
+            <li class="thumb-up-button" id="thumb-up-button"><i class="far fa-thumbs-up fa-lg" id="thumb-up-icon"></i> <span id="article-thumbup-count">0</span></li>
+            
+            <li><i class="fa fa-user"></i> Li JunFeng</li>
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
+    
+<div class="tags">
+	
+		
+			<label class="tag-1"><a href="/tags/Java8/">Java8</a></label>
+		
+	
+		
+			<label class="tag-2"><a href="/tags/Lambda/">Lambda</a></label>
+		
+	
+	</div>
+
+    </div>
+    <div class="article-cards">
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                Li JunFeng
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id="chart-post-visit"></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id="text-post-summary">引言
+lambda即匿名函数，使用它可以简洁的表示一个行为。由于这个“行为”是可以传递的，Java8的世界变得妙极了~
+简单地看个例子：
+123456@Data@AllArgsConstructorpublic class Apple &#123;    private Integer weight;    private String color;&#125;
+1234567appleList.sort(new Comparator&lt;Apple&gt;() &#123;    @Override    public int compare(Apple a1, Apple a2)...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id="article-toc">
+    
+        
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口-functionalinterface"><span class="toc-number">2.</span> <span class="toc-text">函数式接口 @FunctionalInterface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传递行为-而不是传递值"><span class="toc-number">3.</span> <span class="toc-text">传递行为，而不是传递值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda书写语法"><span class="toc-number">4.</span> <span class="toc-text">lambda书写语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用"><span class="toc-number">5.</span> <span class="toc-text">方法引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶：复合lambda"><span class="toc-number">6.</span> <span class="toc-text">进阶：复合lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda的注意事项"><span class="toc-number">7.</span> <span class="toc-text">lambda的注意事项</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#测验"><span class="toc-number"></span> <span class="toc-text">测验</span></a>
+</li></div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+    </div>
+    <div class="article-content">
+    <h2 id="引言">引言</h2>
+<p>lambda即匿名函数，使用它可以简洁的表示一个行为。由于这个“行为”是可以传递的，Java8的世界变得妙极了~</p>
+<p>简单地看个例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="meta">@AllArgsConstructor</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Apple</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer weight;</span><br><span class="line">    <span class="keyword">private</span> String color;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">appleList.sort(<span class="keyword">new</span> Comparator&lt;Apple&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Apple a1, Apple a2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a1.getWeight() - a2.getWeight();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line">System.out.println(appleList);</span><br></pre></td></tr></table></figure>
+<p>sort方法需要传入一个Comparator接口以便进行排序。</p>
+<p>在Java8以前，显然需要传入一个Comparator的实现类，就像上面的代码。</p>
+<p>我们已经习惯了使用匿名类来实现接口，但是这种方式有几个显而易见的缺点：</p>
+<ul>
+<li>
+<p>代码量太多，我们真正要关心的只有<code>o1.getWeight() - o2.getWeight()</code>一句，其他的代码都是一些不得不写，但是很繁琐的样板化代码。而且对于阅读代码来说也是写无用信息。</p>
+</li>
+<li>
+<p>如果需要不同的比较器，需要书写多个匿名类。而且，为了复用和清晰，我们就不能使用匿名类，只得将他们提取出来，成为一个个的比较器实现类，这又增加了许多代码的书写，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppleComparatorByWeight</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Apple</span>&gt;</span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Apple a1, Apple a2)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> xxx</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AppleComparatorByColor</span> <span class="keyword">implements</span> <span class="title">Comparator</span>&lt;<span class="title">Apple</span>&gt;</span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(Apple a1, Apple a2)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> xxx</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">appleList.sort(<span class="keyword">new</span> AppleComparatorByWeight());</span><br><span class="line">appleList.sort(<span class="keyword">new</span> AppleComparatorByColor());</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>看看Java8是如何解决的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appleList.sort((a1, a2) -&gt; a1.getWeight() - a2.getWeight());</span><br></pre></td></tr></table></figure>
+<p>使用Lambd后，只需要关注真正的业务代码，它自动实现了Comparator接口，并复写了compare方法，我们再也不用写那些讨厌的样板化代码了。代码的语言也变得清晰易懂。</p>
+<p>除了Lambda，使用<code>方法引用</code>，甚至可以进一步将代码简化如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appleList.sort(comparingInt(Apple::getWeight));</span><br></pre></td></tr></table></figure>
+<p>要复用比较器的情景下，也不需要编写实现类，只需要用lambda。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Comparator&lt;Apple&gt; c1 = (a1, a2) -&gt; a1.getWeight() - a2.getWeight();</span><br><span class="line">Comparator&lt;Apple&gt; c2 = (a1, a2) -&gt; a1.getColor().compareTo(a2.getColor());</span><br><span class="line">appleList.sort(c1);</span><br><span class="line">appleList.sort(c2);</span><br></pre></td></tr></table></figure>
+<h2 id="函数式接口-functionalinterface">函数式接口 <code>@FunctionalInterface</code></h2>
+<p><code>@FunctionalInterface</code>是Java8新引入的一个注解，它可以标记在接口/抽象类上，表明此接口/抽象类是一个<code>函数式接口</code>。如果该接口/抽象类不满足函数式接口的要求，那么编译器将报错。</p>
+<blockquote>
+<p>函数式接口： 该接口/抽象类只包含一个抽象方法。（default方法不算抽象方法）</p>
+</blockquote>
+<p>比如刚才的sort方法接收的Comparator接口，就是一个函数式接口，它只有一个compare()抽象方法。</p>
+<blockquote>
+<p>注：如果一个接口复写了Object的方法，并不影响它成为函数式接口。比如Comparator接口还复写了equals方法。</p>
+</blockquote>
+<p>在比如Runnable接口，在JDK8中也被标记上了<code>@FunctionalInterface</code>，因为它只有一个抽象方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么，函数式接口有什么用呢？</p>
+<h2 id="传递行为-而不是传递值">传递行为，而不是传递值</h2>
+<p>Java8中，终于将函数/lambda作为一等公民，这意味着，我们可以将“行为”保存到一个变量里；也可以将&quot;行为&quot;作为参数，在方法之间传递。</p>
+<p>我们先自己写一段代码来感受下，如何接收一个行为。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BufferedReaderProcessor</span> </span>&#123; <span class="comment">//step 1: 定义一个函数式接口，可以理解为“行为”接口</span></span><br><span class="line">    <span class="function">String <span class="title">process</span><span class="params">(BufferedReader b)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProcessFileDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// step 2: 定义一个方法，来接收“行为”</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> String <span class="title">processFile</span><span class="params">(BufferedReaderProcessor p)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> (BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> FileReader(<span class="string">"data.txt"</span>))) &#123;</span><br><span class="line">            <span class="keyword">return</span> p.process(br);  <span class="comment">//调用这个"行为"p，这个“行为”需要一个参数br</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="comment">//step 3: 向processFile()传递行为</span></span><br><span class="line">        String online = processFile(br -&gt; br.readLine());</span><br><span class="line">        String twoLines = processFile(br -&gt; br.readLine() + br.readLine());</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"online:\n"</span> + online);</span><br><span class="line">        System.out.println(<span class="string">"twoLines:\n"</span> + twoLines);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>显然，lambda自动地实现了BufferedReaderProcessor接口并override了process方法。</p>
+<p>在看下其他的例子，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//执行一个行为是“打印haha"的线程</span></span><br><span class="line"><span class="keyword">new</span> Thread(()-&gt; System.out.println(<span class="string">"haha"</span>)).start(); </span><br><span class="line"><span class="comment">//对于每个apple，执行打印操作</span></span><br><span class="line">appleList.forEach(apple -&gt; System.out.println(apple));</span><br></pre></td></tr></table></figure>
+<p>我们说过Runnable接口是一个FunctionalInterface，那么第一个例子中，lambda显然实现了Runnable的run方法。</p>
+<p>那么，传递给forEach方法的lambda又实现了什么接口呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// public interface Iterable&lt;T&gt; </span></span><br><span class="line"><span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEach</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span> </span>&#123;</span><br><span class="line">     Objects.requireNonNull(action);</span><br><span class="line">     <span class="keyword">for</span> (T t : <span class="keyword">this</span>) </span><br><span class="line">         action.accept(t);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，forEach方法接收一个consumer，那么显然我们传递的<code>apple -&gt; System.out.println(apple)</code>实现了该接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Consumer</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">accept</span><span class="params">(T t)</span></span>;</span><br><span class="line">    <span class="comment">// ....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Consumer只有一个抽象方法accept。它接收一个t，返回void。</p>
+<p>结合forEach()方法的定义来思考，当我们调用<code>appleList.forEach(apple -&gt; System.out.println(apple));</code>方法时，t其实是list中的每个apple元素，action是打印apple。</p>
+<p>于是，对于每个apple，Consumer(即“打印行为”) accpet了这个apple。</p>
+<p>这里有可能有点绕，其实就像下面:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">appleList.forEach(<span class="keyword">new</span> Consumer&lt;Apple&gt;() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">accept</span><span class="params">(Apple apple)</span> </span>&#123;</span><br><span class="line">        System.out.println(apple);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>lambda相当于实现了Cousumer接口的accpet方法，然后forEach方法中，对每个元素，都调用accept方法。</p>
+<p>Consumer其实是JDK为我们抽象出了一个通用的函数接口，他将所有**接收一个对象，返回void的行为，叫做<code>Consumer**</code>。</p>
+<p>又比如<code>Predicate</code>接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Predicate</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">test</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接收一个对象，返回boolean的行为，叫做Predicate。</p>
+<p>比如我们可以这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Object[] objects = appleList.stream()</span><br><span class="line">    .filter(apple -&gt; <span class="string">"red"</span>.equals(apple.getColor()))</span><br><span class="line">    .toArray();</span><br><span class="line"><span class="comment">// 关于stream()请参考下一讲《Java8-Stream》</span></span><br></pre></td></tr></table></figure>
+<p>filter方法接收一个<code>Predicate</code>。apple为红色时，返回true。</p>
+<p>那么这条代码将返回appleList中所有红色的苹果。</p>
+<p>JDK中还有许多抽象的行为接口：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数式接口</th>
+<th>函数描述符</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Predicate<t></t></td>
+<td>T-&gt;boolean</td>
+<td>接收T，返回boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">Consumer<t></t></td>
+<td>T-&gt;void</td>
+<td>接收T，返回void</td>
+</tr>
+<tr>
+<td style="text-align:left">Function&lt;T,R&gt;</td>
+<td>T-&gt;R</td>
+<td>接收T，返回R</td>
+</tr>
+<tr>
+<td style="text-align:left">Supplier<t></t></td>
+<td>()-&gt;T</td>
+<td>什么也不接收，返回一个T</td>
+</tr>
+<tr>
+<td style="text-align:left">UnaryOperator<t></t></td>
+<td>T-&gt;T</td>
+<td>接收一个T，返回一个T</td>
+</tr>
+<tr>
+<td style="text-align:left">BinaryOperator<t></t></td>
+<td>(T,T)-&gt;T</td>
+<td>接收两个T类型对象，返回一个T类型对象</td>
+</tr>
+<tr>
+<td style="text-align:left">BiPredicate&lt;L,R&gt;</td>
+<td>(L,R)-&gt;boolean</td>
+<td>接收T、R，返回boolean</td>
+</tr>
+<tr>
+<td style="text-align:left">BiConsumer&lt;T,U&gt;</td>
+<td>(T,U)-&gt;void</td>
+<td>接收T、U，返回void</td>
+</tr>
+<tr>
+<td style="text-align:left">BiFunction&lt;T,U,R&gt;</td>
+<td>(T,U)-&gt;R</td>
+<td>接收T、U，返回一个R</td>
+</tr>
+</tbody>
+</table>
+<p>还记得上面我们实现的<code>BufferedReaderProcessor</code>吗？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BufferedReaderProcessor</span> </span>&#123; </span><br><span class="line">    <span class="function">String <span class="title">process</span><span class="params">(BufferedReader b)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它不正是一个Function&lt;BufferedReader,String&gt;吗。TODO 试着修改下之前的代码？</p>
+<h2 id="lambda书写语法">lambda书写语法</h2>
+<p>Lambda基本语法是</p>
+<blockquote>
+<p>(parameters) -&gt; expression</p>
+</blockquote>
+<p>或（请注意语句的花括号）</p>
+<blockquote>
+<p>(parameters) -&gt; { statements; }</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//第一个Lambda具有一个String类型的参数并返回一个int。 没有写return语句，但是已经隐含了return</span></span><br><span class="line">(String s) -&gt; s.length()</span><br><span class="line"><span class="comment">//第二个Lambda有一个Apple类型的参数并返回一个boolean</span></span><br><span class="line">(Apple a) -&gt; a.getWeight() &gt; <span class="number">150</span></span><br><span class="line"><span class="comment">//第三个Lambda有两个int类型的参数而没有返回值（void返回）。注意Lambda可以包含多行语句，这里是两行</span></span><br><span class="line">(<span class="keyword">int</span> x, <span class="keyword">int</span> y) -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">"Result:"</span>);</span><br><span class="line">    System.out.println(x+y);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//第四个Lambda没有参数，返回一个int</span></span><br><span class="line">() -&gt; <span class="number">42</span></span><br><span class="line"><span class="comment">//第五个Lambda有两个Apple类型的参数，返回一个int</span></span><br><span class="line">(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight())</span><br></pre></td></tr></table></figure>
+<h2 id="方法引用">方法引用</h2>
+<p>我们已经知道了，可以通过lambda来implement一个函数式接口，从而省去很多样板化代码。</p>
+<p>另外，通过方法引用的方式，也可以implement一个函数式接口，而且这种方式能进一步简化代码、提高代码易读性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 例一：静态方法引用</span></span><br><span class="line">List&lt;String&gt; strings = Arrays.asList(<span class="string">"12"</span>, <span class="string">"14"</span>, <span class="string">"3"</span>, <span class="string">"2"</span>);</span><br><span class="line"><span class="comment">// 使用lambda：</span></span><br><span class="line">strings.stream()</span><br><span class="line">    .map(str-&gt;Integer.parseInt(str))  <span class="comment">//（map方法的意思是将每个str映射成一个int）</span></span><br><span class="line">    .toArray();</span><br><span class="line"><span class="comment">// 使用方法引用</span></span><br><span class="line">strings.stream()</span><br><span class="line">    .map(Integer::parseInt) <span class="comment">// 引用Integer类的静态方法</span></span><br><span class="line">    .toArray();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 例二：任意类型实例方法引用</span></span><br><span class="line"><span class="comment">// 使用lambda：</span></span><br><span class="line">appleList.stream().map(apple -&gt; apple.toString()).forEach(System.out::println);</span><br><span class="line"><span class="comment">// 使用方法引用</span></span><br><span class="line">appleList.stream()</span><br><span class="line">    .map(Apple::toString) <span class="comment">// 引用appleList中每个元素的toString</span></span><br><span class="line">    .forEach(System.out::println);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 例三：现有对象的实例方法引用</span></span><br><span class="line"><span class="comment">// 使用lambda：</span></span><br><span class="line">appleList.forEach(apple -&gt; System.out.println(apple));</span><br><span class="line"><span class="comment">// 使用方法引用： </span></span><br><span class="line">appleList.forEach(System.out::println); <span class="comment">//引用System.out对象的实例方法println。 传入的参数是每个遍历到的apple</span></span><br></pre></td></tr></table></figure>
+<p>以上展示了总共的三种方法引用。</p>
+<ol>
+<li>静态方法的引用</li>
+<li>任意类型实例方法的引用</li>
+<li>现有对象的方法的引用</li>
+</ol>
+<p>需要区别的是后两种，正如实例代码中，第二种方式时，appleList中的每个元素是方法的调用者；而第三种方式时，由于引用的是其他对象的方法，所以appleList中的每个元素成为了该方法的入参。</p>
+<p>ps：实例代码中的map方法传入一个Function&lt;T,R&gt;，作用是将一个T类型的流映射成一个R类型的流。关于流的内容请参考下一讲《Java8-Stream》</p>
+<h2 id="进阶：复合lambda">进阶：复合lambda</h2>
+<p>类比于数学中的函数组合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f(x) = x+1</span><br><span class="line">g(x) = x*2</span><br><span class="line">则 g(f(x)) = (x+1)*2</span><br></pre></td></tr></table></figure>
+<p>可以把多个简单的lambda复合成复杂的表达式。</p>
+<h3 id="函数复合">函数复合</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Function&lt;Integer, Integer&gt; f = x -&gt; x + <span class="number">1</span>;</span><br><span class="line">Function&lt;Integer, Integer&gt; g = x -&gt; x * <span class="number">2</span>;</span><br><span class="line">Function&lt;Integer, Integer&gt; h1 = f.andThen(g); <span class="comment">//h1 = (x+1)*2</span></span><br><span class="line">Function&lt;Integer, Integer&gt; h2 = f.compose(g); <span class="comment">//h2 = 2*x+1</span></span><br><span class="line"><span class="keyword">int</span> result1 = h1.apply(<span class="number">1</span>); <span class="comment">// 4</span></span><br><span class="line"><span class="keyword">int</span> result2 = h2.apply(<span class="number">1</span>); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+<h3 id="谓词复合">谓词复合</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Predicate&lt;Apple&gt; redApple = apple -&gt; <span class="string">"red"</span>.equals(apple.getColor());</span><br><span class="line"></span><br><span class="line">Predicate&lt;Apple&gt; notRedApple = redApple.negate();</span><br><span class="line">Predicate&lt;Apple&gt; redAndHeavyApple = redApple.and(a -&gt; a.getWeight() &gt; <span class="number">150</span>);</span><br><span class="line">Predicate&lt;Apple&gt; redAndHeavyAppleOrGreen =</span><br><span class="line">    redApple.and(a -&gt; a.getWeight() &gt; <span class="number">150</span>)</span><br><span class="line">    .or(a -&gt; <span class="string">"green"</span>.equals(a.getColor())); <span class="comment">// (red &amp;&amp; &gt;150)||green</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//请注意， and和or方法是按照在表达式链中的位置，从左向右确定优先级的。因此， a.or(b).and(c)可以看作(a || b) &amp;&amp; c</span></span><br></pre></td></tr></table></figure>
+<h3 id="比较器复合">比较器复合</h3>
+<h4 id="逆序">逆序</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">appleList.sort( comparing(Apple::getWeight).reversed() );</span><br></pre></td></tr></table></figure>
+<h4 id="比较器链">比较器链</h4>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">appleList.sort( </span><br><span class="line">				comparing(Apple::getWeight)</span><br><span class="line">                .reversed()</span><br><span class="line">                .thenComparing(Apple::getCountry)</span><br><span class="line">              );</span><br></pre></td></tr></table></figure>
+<h2 id="lambda的注意事项">lambda的注意事项</h2>
+<h3 id="lambda与异常">lambda与异常</h3>
+<blockquote>
+<p>请注意，任何函数式接口都不允许抛出受检异常（checked exception）。如果你需要Lambda
+表达式来抛出异常，有两种办法：定义一个自己的函数式接口，并声明受检异常，或者把Lambda
+包在一个try/catch块中。</p>
+<ol>
+<li>对于自己的函数式接口</li>
+</ol>
+<p>比如，我们介绍了一个新的函数式接口BufferedReaderProcessor，它显式声明了一个IOException：
+@FunctionalInterface
+public interface BufferedReaderProcessor {
+String process(BufferedReader b) throws IOException;
+}
+BufferedReaderProcessor p = (BufferedReader br) -&gt; br.readLine();</p>
+<ol start="2">
+<li>把Lambda在一个try/catch块中</li>
+</ol>
+<p>如果你使用一个接受函数式接口的API，比如Function&lt;T, R&gt;，没有办法自己声明抛出Exception。这种情况下，你可以显式捕捉受检异常：
+Function&lt;BufferedReader, String&gt; f = (BufferedReader b) -&gt; {
+	try {
+		return b.readLine();
+	}
+	catch(IOException e) {
+		throw new RuntimeException(e);
+	}
+};</p>
+</blockquote>
+<h3 id="同样的-lambda-不同的函数式接口">同样的 Lambda，不同的函数式接口</h3>
+<p>同一个Lambda表达式就可以对应不同的函数式接口，只要它们的方法签名能够兼容 。</p>
+<p>比如我们自己写的BufferedReaderProcessor其实就是一个Function&lt;BufferedReader, String&gt;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">BufferedReaderProcessor</span> </span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">process</span><span class="params">(BufferedReader b)</span> <span class="keyword">throws</span> IOException</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>于是相同的lambda可以同时对应BufferedReaderProcessor和Function&lt;BufferedReader, String&gt;</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BufferedReaderProcessor p1 = br -&gt; br.readLine();</span><br><span class="line">Function&lt;BufferedReader, String&gt; p2 = br -&gt; br.readLine();</span><br></pre></td></tr></table></figure>
+<p>再比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Comparator&lt;Apple&gt; c1 =</span><br><span class="line">	(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</span><br><span class="line">ToIntBiFunction&lt;Apple, Apple&gt; c2 =</span><br><span class="line">	(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</span><br><span class="line">BiFunction&lt;Apple, Apple, Integer&gt; c3 =</span><br><span class="line">	(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</span><br></pre></td></tr></table></figure>
+<p><code>(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</code>的方法签名为<code>（Apple, Apple） -&gt; Integer</code>,所以它同时符合三种函数式接口的签名</p>
+<ul>
+<li>Comparator:   ( T, T ) -&gt;int</li>
+<li>ToIntBiFunction： （T, U）-&gt; int</li>
+<li>BiFunction: ( T, U, R ) -&gt; R</li>
+</ul>
+<p>另外，如果一个Lambda的主体是一个语句表达式， 它就和一个返回void的函数描述符兼容（当然需要参数列表也兼容）。例如，以下两行都是合法的，尽管List的add方法返回了一个boolean，而不是Consumer上下文（T -&gt; void）所要求的void：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Predicate返回了一个boolean</span></span><br><span class="line">Predicate&lt;String&gt; p = s -&gt; list.add(s);</span><br><span class="line"><span class="comment">// Consumer返回了一个void</span></span><br><span class="line">Consumer&lt;String&gt; b = s -&gt; list.add(s);</span><br></pre></td></tr></table></figure>
+<h3 id="类型推断">类型推断</h3>
+<p>编译器可以了解Lambda表达式的参数类型，这样就可在Lambda语法中省去标注参数类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Comparator&lt;Apple&gt; c = (Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</span><br><span class="line"></span><br><span class="line">Comparator&lt;Apple&gt; c = (a1, a2) -&gt; a1.getWeight().compareTo(a2.getWeight());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当Lambda仅有一个类型需要推断的参数时，参数名称两边的括号也可以省略</span></span><br><span class="line">appleList.forEach( a -&gt; System.out::println);</span><br><span class="line"><span class="comment">// forEach(Consumer&lt;T&gt;) -&gt; appleList -&gt; Apple -&gt; T is Apple -&gt; a为Apple</span></span><br></pre></td></tr></table></figure>
+<h3 id="局部变量">局部变量</h3>
+<p>Lambda表达式引用的局部变量必须是 final，或事实上是final 的</p>
+<p>下面的代码无法编译，因为portNumber被赋值两次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> portNumber = <span class="number">1337</span>;</span><br><span class="line">Runnable r = () -&gt; System.out.println(portNumber);</span><br><span class="line">portNumber = <span class="number">31337</span>; <span class="comment">//如果去掉这一句，则可以正常编译</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>你可能会问自己，为什么局部变量有这些限制。</p>
+<p>第一，实例变量和局部变量背后的实现有一个关键不同。实例变量都存储在堆中，而局部变量则保存在栈上。如果Lambda可以直接访问局部变量，而且Lambda是在一个线程中使用的，则使用Lambda的线程，可能会在分配该变量的线程将这个变量收回之后，去访问该变量。因此， Java在访问自由局部变量时，实际上是在访问它的副本，而不是访问原始变量。如果局部变量仅仅赋值一次那就没有什么区别了——因此就有了
+这个限制。
+第二，这一限制不鼓励你使用改变外部变量的典型命令式编程模式（我们会在以后解释，这种模式会阻碍很容易做到的并行处理）</p>
+</blockquote>
+<h1 id="测验">测验</h1>
+<h3 id="函数式接口">函数式接口</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">布尔表达式</th>
+<th style="text-align:left">(List<string> list) -&gt; list.isEmpty()</string></th>
+<th style="text-align:left">Predicate&lt;List<string>&gt;</string></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">创建对象</td>
+<td style="text-align:left">() -&gt; new Apple(10)</td>
+<td style="text-align:left">Supplier<apple></apple></td>
+</tr>
+<tr>
+<td style="text-align:left">消费一个对象</td>
+<td style="text-align:left">(Apple a) -&gt; System.out.println(a.getWeight())</td>
+<td style="text-align:left">Consumer<apple></apple></td>
+</tr>
+<tr>
+<td style="text-align:left">从一个对象中选择/提取</td>
+<td style="text-align:left">(String s) -&gt; s.length()</td>
+<td style="text-align:left">Function&lt;String, Integer&gt;或ToIntFunction<string></string></td>
+</tr>
+<tr>
+<td style="text-align:left">合并两个值</td>
+<td style="text-align:left">(int a, int b) -&gt; a * b</td>
+<td style="text-align:left">IntBinaryOperator</td>
+</tr>
+<tr>
+<td style="text-align:left">比较两个对象</td>
+<td style="text-align:left">(Apple a1, Apple a2) -&gt; a1.getWeight().compareTo(a2.getWeight())</td>
+<td style="text-align:left">Comparator<apple>或BiFunction&lt;Apple, Apple, Integer&gt; 或 ToIntBiFunction&lt;Apple, Apple</apple></td>
+</tr>
+</tbody>
+</table>
+<p>下面哪些接口是函数式接口？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Adder</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SmartAdder</span> <span class="keyword">extends</span> <span class="title">Adder</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">double</span> a, <span class="keyword">double</span> b)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Nothing</span></span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>答案：只有Adder是函数式接口。
+SmartAdder不是函数式接口，因为它定义了两个叫作add的抽象方法（其中一个是从
+Adder那里继承来的）。
+Nothing也不是函数式接口，因为它没有声明抽象方法。</p>
+<h3 id="lambda语法">Lambda语法</h3>
+<p>根据上述语法规则，以下哪个不是有效的Lambda表达式？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(1) () -&gt; &#123;&#125;</span><br><span class="line">(2) () -&gt; &quot;Raoul&quot;</span><br><span class="line">(3) () -&gt; &#123;return &quot;Mario&quot;;&#125;</span><br><span class="line">(4) (Integer i) -&gt; return &quot;Alan&quot; + i;</span><br><span class="line">(5) (String s) -&gt; &#123;&quot;IronMan&quot;;&#125;</span><br></pre></td></tr></table></figure>
+<p>答案：只有4和5是无效的Lambda。
+(1) 这个Lambda没有参数，并返回void。它类似于主体为空的方法：<code>public void run() {}</code>。</p>
+<p>(2) 这个Lambda没有参数，并返回String作为表达式。</p>
+<p>(3) 这个Lambda没有参数，并返回String（利用显式返回语句）。</p>
+<p>(4) return是一个控制流语句。要使此Lambda有效，需要使花括号，如下所示：<code>(Integer i) -&gt; {return &quot;Alan&quot; + i;}</code>。</p>
+<p>(5)“Iron Man”是一个表达式，不是一个语句。要使此Lambda有效，你可以去除花括号和分号，如下所示： <code>(String s) -&gt; &quot;Iron Man&quot;</code>。或者如果你喜欢，可以使用显式返回语句，如下所示：<code>(String s)-&gt;{return &quot;IronMan&quot;;}</code>。</p>
+
+    
+    </div>
+    
+    
+        <div class="article-comment" id="article-comment">
+            
+
+<h1>Comment</h1>
+
+  
+    <div id="valine"></div>
+  
+
+
+        </div>
+        
+</article>
+  </div>
+
+  
+
+<footer id="footer">
+    <div class="footer-copyright">
+        <div>
+            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class="footer-social">
+        
+            
+                
+                    <div class="footer-social-item"><a href="https://github.com/lijunfeng722" target="_blank"><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+        
+    </div>
+</footer>
+
+  <br>
+
+  <div id="footer-nav" class='footer-nav'>
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#函数式接口-functionalinterface"><span class="toc-number">2.</span> <span class="toc-text">函数式接口 @FunctionalInterface</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#传递行为-而不是传递值"><span class="toc-number">3.</span> <span class="toc-text">传递行为，而不是传递值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda书写语法"><span class="toc-number">4.</span> <span class="toc-text">lambda书写语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#方法引用"><span class="toc-number">5.</span> <span class="toc-text">方法引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶：复合lambda"><span class="toc-number">6.</span> <span class="toc-text">进阶：复合lambda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#lambda的注意事项"><span class="toc-number">7.</span> <span class="toc-text">lambda的注意事项</span></a></li></ol><li class="toc-item toc-level-1"><a class="toc-link" href="#测验"><span class="toc-number"></span> <span class="toc-text">测验</span></a>
+</li></div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+
+  
+
+
+
+    
+    
+    
+    
+<script>
+    new Valine({
+        el: '#valine',
+        notify:false, 
+        verify:false,
+        appId: 'V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz',
+        appKey: 'rWMxYnrvsMGqWwJFbczwXkPY',
+        placeholder: 'write your comment',
+        path:window.location.pathname, 
+        avatar:'retro',
+        lang: 'en'
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+  
+  // update cookie if this page is opened (directly)
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
+  loadjs.ready('post-version', function(){
+    
+    new Postv2('hashit_c63b3c6f96223fdd5f03c0209e07726794ef4716b6e25bb4bf7c3cdb7d13ca38').update('hashit_5fd94453a04962f9d01d4fdf12eed3e2158977fdd722545a80d879041e43f936', function(){});
+  });
+  
+</script>
+
+
+    
+<script type="text/javascript">
+  
+  // update cookie if this page is opened (directly)
+  function getIP(json) {
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/leancloud.js'], 'post-visit-comment-count');
+  loadjs.ready('post-visit-comment-count', function(){
+    
+    
+    LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+    var leanCloud = LeanCloud.getInstance();
+    leanCloud.fetchIsThumbUp('/2019/05/19/Java8-之-Lambda/', json.ip);
+    document.getElementById('thumb-up-button').addEventListener('click', function(e){
+      leanCloud.isThumbUp('/2019/05/19/Java8-之-Lambda/', function(isThumbUp){
+        console.log('is thumb up:' + isThumbUp);
+        if(isThumbUp){
+          leanCloud.removeThumbUpRecord('/2019/05/19/Java8-之-Lambda/', json.ip);
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+          
+        }else{
+          leanCloud.addThumbUpRecord('/2019/05/19/Java8-之-Lambda/', json.ip);
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }
+        leanCloud.getThumbUpCount('/2019/05/19/Java8-之-Lambda/', function(count){
+            console.log('thumb up count: ' + count)
+            var el = document.getElementById('article-thumbup-count');
+            if(el) el.innerHTML = count;
+        });
+      });
+    });
+    leanCloud.addVisitRecord('/2019/05/19/Java8-之-Lambda/', json.ip);
+    leanCloud.fetchCommentCount('/2019/05/19/Java8-之-Lambda/');
+    leanCloud.fetchVisitCount('/2019/05/19/Java8-之-Lambda/');
+    leanCloud.fetchThumbUpCount('/2019/05/19/Java8-之-Lambda/');
+    leanCloud.getCommentCount('/2019/05/19/Java8-之-Lambda/', function(count){
+        var el = document.querySelector('#article-comment-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getVisitCount('/2019/05/19/Java8-之-Lambda/', function(count){
+        var el = document.querySelector('#article-visit-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getThumbUpCount('/2019/05/19/Java8-之-Lambda/', function(count){
+        var el = document.getElementById('article-thumbup-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.isThumbUp('/2019/05/19/Java8-之-Lambda/', function(isThumbUp){
+        console.log('init thumb up:' + isThumbUp);
+        if(isThumbUp){
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }else{
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+        }
+    });
+  });
+  }
+  
+</script>
+
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
+
+
+<!-- <script src="/js/post.js"></script> -->
+
+<script src="/js/headroom.min.js"></script>
+
+<script data-no-instant type="text/javascript">
+
+initHeadroom();
+
+changeLayoutOnTouchScreen();
+
+// 
+// var post = new Post('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+// post.getCommentCount(window.location.pathname, function(count){
+//     $('#article-comment-count').text(count);
+// });
+// post.addVisitRecord(window.location.pathname, userip);
+// post.getVisitCount(window.location.pathname, function(count){
+//     $('#article-visit-count').text(count);
+// });
+
+// 
+</script>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
