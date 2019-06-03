@@ -10,7 +10,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
   
-      <title>Not Found - HeiHeiHei</title>
+      <title>Stream - Tag - HeiHeiHei</title>
   
 
   
@@ -156,27 +156,93 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div style="flex: 1;">
-      
+      <div class="archive-container">
 
-<style>
-    body {
-      background-color: white;
-    }
-</style>
-<div class="article" style="margin-top: 15%">
-    <div class="article-content">
-            <blockquote>
-                <img src="/images/404.gif" alt>
-                <footer>
-                    <strong>Collect UI</strong>
-                    <cite><a href="https://medium.com/@CollectUI/404-page-design-inspiration-march-2017-f6d9f7efd054">404 Page Design Inspiration</a></cite>
-                </footer>
-            </blockquote>
-        </div>
+
+	
+		<h2 class="archive-title">#   Stream</h2>
+	
+	<div class="archive-cards">
+	
+		
+
+
+
+
+<div class="Card-archive" id="hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93" data-name="Java8 之 Stream" data-version>
+	<mark class="Card-badge"></mark>
+	<div class="Card-body">
+		<h3 class="Card-title">
+			
+				<a href="/2019/05/26/Java8-之-Stream/">
+			
+			Java8 之 Stream</a>
+		</h3>
+		<div class="Card-meta">
+			<div class="Card-tags">
+<div class="tags">
+	
+		
+			
+				<label class="tag-1"><a href="/tags/Java8/">Java8</a></label>
+			
+		
+	
+		
+			
+				<label class="tag-2"><a href="/tags/Stream/">Stream</a></label>
+			
+		
+	
+	</div>
+</div>
+			<ul>
+					<li>
+						<a href="/archives/">
+							<i class="fa fa-calendar"></i> 2019-05-26
+						</a>
+					</li>
+					
+					
+					<li>
+						<a href="/2019/05/26/Java8-之-Stream/#article-comment">
+							<i class="fa fa-comments"></i> <span class="card-comment-count">0</span>
+						</a>
+					</li>
+					<li>
+						<i class="fa fa-eye"></i> <span class="card-visit-count">0</span>
+					</li>
+					
+					
+			</ul>
+		</div>
+	</div>
 </div>
 
+	
+	</div>
 
 
+
+<div class="pagination">
+	
+	
+	
+	
+		
+		
+		<div class="pagination-item">
+			
+			
+				<span>1</span>
+			
+		</div>
+		
+		
+	
+	
+</div>
+</div>
   </div>
 
   
@@ -290,11 +356,68 @@
 <script type="text/javascript">
 
   
+    loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
+    loadjs.ready('post-version', {
+      success: function(){
+        console.log('ready to run badge script')
+        
+          
+          
+          
+            var postBadge = document.querySelector('#hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93 mark.Card-badge');
+            $(postBadge).fadeOut();
+            
+          
+        
+      }
+    })
+  
 </script>
 
 
     
 <script type="text/javascript">
+  
+    function getIP(json) {
+      loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/leancloud.js'], 'post-visit-comment-count');
+    loadjs.ready('post-visit-comment-count', {
+      success: function(){
+          LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+          var leanCloud = LeanCloud.getInstance();
+        
+          
+          
+          // start caching post visit and comment counts
+          leanCloud.fetchIsThumbUp('/2019/05/26/Java8-之-Stream/', json.ip);
+          leanCloud.fetchCommentCount('/2019/05/26/Java8-之-Stream/');
+          leanCloud.fetchVisitCount('/2019/05/26/Java8-之-Stream/');
+          leanCloud.fetchThumbUpCount('/2019/05/26/Java8-之-Stream/');
+          leanCloud.getCommentCount('/2019/05/26/Java8-之-Stream/', function(count){
+              var el = document.querySelector('#hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93 .card-comment-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getVisitCount('/2019/05/26/Java8-之-Stream/', function(count){
+              var el = document.querySelector('#hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93 .card-visit-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.getThumbUpCount('/2019/05/26/Java8-之-Stream/', function(count){
+              var el = document.querySelector('#hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93 .card-thumbup-count');
+              if(el) el.innerHTML = count;
+          });
+          leanCloud.isThumbUp('/2019/05/26/Java8-之-Stream/', function(isThumbUp){
+              var el = document.querySelector('#hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93 .card-thumbup-container i');
+              if(el){
+                if(isThumbUp){
+                  el.className = 'fas fa-thumbs-up';
+                }else{
+                  el.className = 'far fa-thumbs-up';
+                }
+              }
+          });
+        
+      }
+    })
+    }
   
 </script>
 
@@ -312,6 +435,20 @@ initHeadroom();
 
 changeLayoutOnTouchScreen();
 
+// 
+// var post = new Post('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+// $('.Card-archive').each(function(){
+//     var post_url = $(this).attr('id');
+//     var true_url = $(this).find('.Card-title a').first().attr('href');
+//     var card = this;
+//     post.getCommentCount(post_url, function(count){
+//         $(card).find('.card-comment-count').first().text(count);
+//     });
+//     post.getVisitCount(post_url, function(count){
+//         $(card).find('.card-visit-count').first().text(count);
+//     });
+    
+// });
 // 
 </script>
 
