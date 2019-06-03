@@ -123,7 +123,7 @@
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="Archivi">
+			<a href="/archives/" title="归档">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -132,7 +132,7 @@
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="Cerca">
+			<a href="/search/" title="搜索">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
@@ -214,7 +214,7 @@
 
 
 
-<article class="article" id="/2019/05/26/Java8-之-Stream/" data-name="Java8 之 Stream" data-version>
+<article class="article" id="/2019/06/03/Java8-之-Stream/" data-name="Java8 之 Stream" data-version>
 
     <!-- Title -->
     <div class="article-header">
@@ -226,7 +226,7 @@
          </div>
          
          <h1 class="article-title">
-            <a href="/2019/05/26/Java8-之-Stream/">
+            <a href="/2019/06/03/Java8-之-Stream/">
                 Java8 之 Stream
             </a>
         </h1>
@@ -246,7 +246,7 @@
     <!-- Date and Author -->
     <div class="article-meta">
     <ul>
-            <li><i class="fa fa-calendar"></i> 2019-05-26</li>
+            <li><i class="fa fa-calendar"></i> 2019-06-03</li>
             
             <li class="comment-button"><a href="#article-comment"><i class="fa fa-comments"></i> <span id="article-comment-count">0</span></a></li>
             <li><i class="fa fa-eye"></i> <span id="article-visit-count">0</span></li>
@@ -467,23 +467,23 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>因为getName方法返回一个String，所以map方法输出的流的类型就是Stream<string>。</string></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//提取每个菜肴名称的长度</span></span><br><span class="line">List&lt;Integer&gt; dishNameLengths = menu.stream()</span><br><span class="line">    .map(Dish::getName)</span><br><span class="line">    .map(String::length)</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <p>第一个map将Stream&lt;Dish&gt;映射为Stream&lt;String&gt;，然后第二个map又将Stream&lt;String&gt;映射为Stream&lt;Integer&gt;，在IDEA中可以看到给出的提示，如下图：</p>
-<p><img src="/2019/05/26/Java8-之-Stream/map.png" alt="idea对Stream的提示"></p>
+<p><img src="/2019/06/03/Java8-之-Stream/map.png" alt="idea对Stream的提示"></p>
 <dl>
 <dt>flatMap(Function&lt;T,R&gt;)</dt>
 <dd>将函数返回的Stream&lt;T&gt;并不是分别映射成一个流(导致最终映射的结果是Stream&lt;Stream&lt;T&gt;&gt;)，而是映射成流的内容（最终映射结果为Stream&lt;T&gt;）。</dd>
 </dl>
 <p>对于一张单表，如何返回一张列表，列出里面各不相同的字符呢？</p>
-<p>例如，给定单词列表[�Hello�, �World�]，你想要返回列表[�H�,�e�,�l�,�o�,�W�,�r�,�d�]。</p>
+<p>例如，给定单词列表<code>[&quot;Hello&quot;, &quot;World&quot;]</code>，你想要返回列表<code>[&quot;H&quot;,&quot;e&quot;,&quot;l&quot;,&quot;o&quot;,&quot;W&quot;,&quot;r&quot;,&quot;d&quot;]</code>。</p>
 <p>你可能会认为这很容易，你可以把每个单词映射成一张字符表，然后调用distinct来过滤重复的字符。第一个版本可能是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; words = Arrays.asList(<span class="string">"Hello"</span>, <span class="string">"World"</span>);</span><br><span class="line">words.stream()</span><br><span class="line">    .map(word -&gt; word.split(<span class="string">""</span>))</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <p>传递给map方法的Lambda为每个单词返回了一个String[]。因此，map返回的流实际上是Stream&lt;String[]&gt;类型的。你真正想要的是用Stream&lt;String&gt;来表示一个字符流。</p>
-<p><img src="/2019/05/26/Java8-之-Stream/flatmap.png" alt="不正确的使用map1"></p>
+<p><img src="/2019/06/03/Java8-之-Stream/flatmap.png" alt="不正确的使用map1"></p>
 <p>首先，你需要一个字符流，而不是数组流。有一个叫作Arrays.stream()的方法可以接受一个数组并产生一个流 ：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">words.stream()</span><br><span class="line">    .map(word -&gt; word.split(<span class="string">""</span>))<span class="comment">// 每个单词转换为由其字母构成的数组</span></span><br><span class="line">    .map(Arrays::stream)<span class="comment">// 让每个数组变成一个单独的流</span></span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <p>当前的解决方案仍然搞不定！ 这是因为，你现在得到的是 Stream&lt;Stream&lt;String&gt;&gt;。</p>
 <p>现在flatMap终于派上用场了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; uniqueCharacters = words.stream()</span><br><span class="line">    .map(w -&gt; w.split(<span class="string">""</span>))</span><br><span class="line">    .flatMap(Arrays::stream)</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/05/26/Java8-之-Stream/%E4%BD%BF%E7%94%A8flatMap%E6%89%BE%E5%87%BA%E5%8D%95%E8%AF%8D%E5%88%97%E8%A1%A8%E4%B8%AD%E5%90%84%E4%B8%8D%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AD%97%E7%AC%A6.png" alt="使用flatMap找出单词列表中各不相同的字符 "></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8flatMap%E6%89%BE%E5%87%BA%E5%8D%95%E8%AF%8D%E5%88%97%E8%A1%A8%E4%B8%AD%E5%90%84%E4%B8%8D%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AD%97%E7%AC%A6.png" alt="使用flatMap找出单词列表中各不相同的字符 "></p>
 <p>上面的代码也可以直接写成：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; uniqueCharacters = words.stream()</span><br><span class="line">    .flatMap(w -&gt; Arrays.stream(w.split(<span class="string">""</span>)))</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <h3 id="查找和匹配">查找和匹配</h3>
@@ -574,7 +574,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <li>生成</li>
 </ul>
 <p>与iterate方法类似， generate方法也可让你按需生成一个无限流。但generate不是依次对每个新生成的值应用函数的。它接受一个Supplie&lt;T&gt;类型的Lambda提供新的值 。</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Stream.generate(Math::random)</span><br><span class="line">    .limit(<span class="number">5</span>)</span><br><span class="line">    .forEach(System.out::println);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">0.9410810294106129</span></span><br><span class="line"><span class="comment">0.6586270755634592</span></span><br><span class="line"><span class="comment">0.9592859117266873</span></span><br><span class="line"><span class="comment">0.13743396659487006</span></span><br><span class="line"><span class="comment">0.3942776037651241</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Stream.generate(Math::random)</span><br><span class="line">    .limit(<span class="number">5</span>)</span><br><span class="line">    .forEach(System.out::println);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">0.9410810294106129</span></span><br><span class="line"><span class="comment">0.6586270755634592</span></span><br><span class="line"><span class="comment">0.9592859117266873</span></span><br><span class="line"><span class="comment">0.13743396659487006</span></span><br><span class="line"><span class="comment">0.3942776037651241</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
 <p>我们使用的供应源（指向Math.random的方法引用）是无状态的：它不会在任何地方记录任何值。但供应源不一定是无状态的。你可以创建存储状态的供应源，它可以修改状态，并在为流生成下一个值时使用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">IntSupplier fib = <span class="keyword">new</span> IntSupplier()&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> previous = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> current = <span class="number">1</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAsInt</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> oldPrevious = <span class="keyword">this</span>.previous;</span><br><span class="line">        <span class="keyword">int</span> nextValue = <span class="keyword">this</span>.previous + <span class="keyword">this</span>.current;</span><br><span class="line">        <span class="keyword">this</span>.previous = <span class="keyword">this</span>.current;</span><br><span class="line">        <span class="keyword">this</span>.current = nextValue;</span><br><span class="line">        <span class="keyword">return</span> oldPrevious;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line">IntStream.generate(fib).limit(<span class="number">10</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
 <h2 id="收集器">收集器</h2>
@@ -680,7 +680,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>通常，就像ToListCollector的情况一样，累加器对象恰好符合预期的最终结果，因此无需进行转换。所以finisher方法只需返回identity函数：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Function&lt;List&lt;T&gt;, List&lt;T&gt;&gt; finisher() &#123;</span><br><span class="line">	<span class="keyword">return</span> Function.identity();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对于顺序流的处理过程，理解supplier、accumulator和finisher三个函数就够了：</p>
-<p><img src="/2019/05/26/Java8-之-Stream/%E9%A1%BA%E5%BA%8F%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E6%AD%A5%E9%AA%A4.png" alt="顺序归约过程的逻辑步骤 "></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E9%A1%BA%E5%BA%8F%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E6%AD%A5%E9%AA%A4.png" alt="顺序归约过程的逻辑步骤 "></p>
 <p>对于并行流而言，由于会将流分割成几个子任务并发收集，所以同时会存在多个收集重启，所以最终需要使用combiner函数将这些部分结果容器合并成一个最终的结果容器。</p>
 <dl>
 <dt>BinaryOperator&lt;A&gt; combiner();</dt>
@@ -689,7 +689,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>对于toList而言，这个方法的实现非常简单，只要把从流的第二个部分收集到的项目列表加到遍历第一部分时得到
 的列表后面就行了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> BinaryOperator&lt;List&lt;T&gt;&gt; combiner() &#123;</span><br><span class="line">    <span class="keyword">return</span> (list1, list2) -&gt; </span><br><span class="line">    			&#123;list1.addAll(list2);<span class="keyword">return</span> list1; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/05/26/Java8-之-Stream/%E4%BD%BF%E7%94%A8combiner%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B9%B6%E8%A1%8C%E5%8C%96%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B.png" alt="使用combiner方法来并行化归约过程"></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8combiner%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B9%B6%E8%A1%8C%E5%8C%96%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B.png" alt="使用combiner方法来并行化归约过程"></p>
 <p>Set&lt;Characteristics&gt; characteristics()</p>
 <p>： 会返回一个不可变的Characteristics集合，提供了一系列特征，也就是一个提示列表，告诉collect方法在执行归约操作的时候可以应用哪些优化（比如并行化）。</p>
 <p>Characteristics是一个包含三个项目的枚举：</p>
@@ -723,12 +723,8 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <h3 id="流与集合的区别">流与集合的区别</h3>
 <blockquote>
 <ul>
-<li>
-<p>比如说存在DVD里的电影，DVD就是一个集合，因为它包含了所有的数据。</p>
-</li>
-<li>
-<p>现在再来想想在网上通过视频流看电影。流媒体视频播放器只要下载用户观看位置的那几帧就可以了，这样不用等到流中大部分值计算出来，你就可以边下载边播放流（比如观看直播足球赛）。</p>
-</li>
+<li>比如说存在DVD里的电影，DVD就是一个集合，因为它包含了所有的数据。</li>
+<li>现在再来想想在网上通过视频流看电影。流媒体视频播放器只要下载用户观看位置的那几帧就可以了，这样不用等到流中大部分值计算出来，你就可以边下载边播放流（比如观看直播足球赛）。</li>
 </ul>
 </blockquote>
 <blockquote>
@@ -742,15 +738,9 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <h2 id="总结">总结</h2>
 <p>总结一下， Java 8中的Stream API可以让你写出这样的代码：</p>
 <ul>
-<li>
-<p>声明性——更简洁，更易读</p>
-</li>
-<li>
-<p>可复合——更灵活</p>
-</li>
-<li>
-<p>可并行——性能更好</p>
-</li>
+<li>声明性——更简洁，更易读</li>
+<li>可复合——更灵活</li>
+<li>可并行——性能更好</li>
 </ul>
 <table>
 <thead>
@@ -806,7 +796,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
         <div class="article-comment" id="article-comment">
             
 
-<h1>Commento</h1>
+<h1>评论</h1>
 
   
     <div id="valine"></div>
@@ -823,8 +813,8 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <footer id="footer">
     <div class="footer-copyright">
         <div>
-            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> e <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Tema: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+            <p> 版权所有 <a href>Li JunFeng </a> @ 2019</p>
+            <p>设计: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> 和 <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; 主题: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; 由 <a href="http://hexo.io">Hexo.</a> 强力驱动</p>
         </div>
     </div>
     
@@ -868,7 +858,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="Archivi">
+			<a href="/archives/" title="归档">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -877,7 +867,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="Cerca">
+			<a href="/search/" title="搜索">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
@@ -947,7 +937,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_c11ce6a910e68b8d98dbbe59f49a4d78ef59f62ffa81d1d9a29b744f1688bf93').update('hashit_d9cd33d50813f8b53cc05cb60f4ccf812c59fa6d7cdd2d8f58fc216164099ec0', function(){});
+    new Postv2('hashit_980a0dfb26d29a780642e110939b854feb221f67491e5004ba8ba96c5e9daea0').update('hashit_b90dc18b547897ac90fc5adb83bbfc51558629b306b3ac19f9b83fce3917d8ee', function(){});
   });
   
 </script>
@@ -964,42 +954,42 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
     
     LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
     var leanCloud = LeanCloud.getInstance();
-    leanCloud.fetchIsThumbUp('/2019/05/26/Java8-之-Stream/', json.ip);
+    leanCloud.fetchIsThumbUp('/2019/06/03/Java8-之-Stream/', json.ip);
     document.getElementById('thumb-up-button').addEventListener('click', function(e){
-      leanCloud.isThumbUp('/2019/05/26/Java8-之-Stream/', function(isThumbUp){
+      leanCloud.isThumbUp('/2019/06/03/Java8-之-Stream/', function(isThumbUp){
         console.log('is thumb up:' + isThumbUp);
         if(isThumbUp){
-          leanCloud.removeThumbUpRecord('/2019/05/26/Java8-之-Stream/', json.ip);
+          leanCloud.removeThumbUpRecord('/2019/06/03/Java8-之-Stream/', json.ip);
           document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
           
         }else{
-          leanCloud.addThumbUpRecord('/2019/05/26/Java8-之-Stream/', json.ip);
+          leanCloud.addThumbUpRecord('/2019/06/03/Java8-之-Stream/', json.ip);
           document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
         }
-        leanCloud.getThumbUpCount('/2019/05/26/Java8-之-Stream/', function(count){
+        leanCloud.getThumbUpCount('/2019/06/03/Java8-之-Stream/', function(count){
             console.log('thumb up count: ' + count)
             var el = document.getElementById('article-thumbup-count');
             if(el) el.innerHTML = count;
         });
       });
     });
-    leanCloud.addVisitRecord('/2019/05/26/Java8-之-Stream/', json.ip);
-    leanCloud.fetchCommentCount('/2019/05/26/Java8-之-Stream/');
-    leanCloud.fetchVisitCount('/2019/05/26/Java8-之-Stream/');
-    leanCloud.fetchThumbUpCount('/2019/05/26/Java8-之-Stream/');
-    leanCloud.getCommentCount('/2019/05/26/Java8-之-Stream/', function(count){
+    leanCloud.addVisitRecord('/2019/06/03/Java8-之-Stream/', json.ip);
+    leanCloud.fetchCommentCount('/2019/06/03/Java8-之-Stream/');
+    leanCloud.fetchVisitCount('/2019/06/03/Java8-之-Stream/');
+    leanCloud.fetchThumbUpCount('/2019/06/03/Java8-之-Stream/');
+    leanCloud.getCommentCount('/2019/06/03/Java8-之-Stream/', function(count){
         var el = document.querySelector('#article-comment-count');
         if(el) el.innerHTML = count;
     });
-    leanCloud.getVisitCount('/2019/05/26/Java8-之-Stream/', function(count){
+    leanCloud.getVisitCount('/2019/06/03/Java8-之-Stream/', function(count){
         var el = document.querySelector('#article-visit-count');
         if(el) el.innerHTML = count;
     });
-    leanCloud.getThumbUpCount('/2019/05/26/Java8-之-Stream/', function(count){
+    leanCloud.getThumbUpCount('/2019/06/03/Java8-之-Stream/', function(count){
         var el = document.getElementById('article-thumbup-count');
         if(el) el.innerHTML = count;
     });
-    leanCloud.isThumbUp('/2019/05/26/Java8-之-Stream/', function(isThumbUp){
+    leanCloud.isThumbUp('/2019/06/03/Java8-之-Stream/', function(isThumbUp){
         console.log('init thumb up:' + isThumbUp);
         if(isThumbUp){
           document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
