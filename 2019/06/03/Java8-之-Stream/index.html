@@ -123,7 +123,7 @@
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="归档">
+			<a href="/archives/" title="Archives">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -132,7 +132,7 @@
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="搜索">
+			<a href="/search/" title="Search">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
@@ -477,13 +477,13 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>你可能会认为这很容易，你可以把每个单词映射成一张字符表，然后调用distinct来过滤重复的字符。第一个版本可能是这样的：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; words = Arrays.asList(<span class="string">"Hello"</span>, <span class="string">"World"</span>);</span><br><span class="line">words.stream()</span><br><span class="line">    .map(word -&gt; word.split(<span class="string">""</span>))</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <p>传递给map方法的Lambda为每个单词返回了一个String[]。因此，map返回的流实际上是Stream&lt;String[]&gt;类型的。你真正想要的是用Stream&lt;String&gt;来表示一个字符流。</p>
-<p><img src="/2019/06/03/Java8-之-Stream/flatmap.png" alt="不正确的使用map1"></p>
+<p><img src="/2019/06/03/Java8-之-Stream/flatMap.png" alt="不正确的使用map1"></p>
 <p>首先，你需要一个字符流，而不是数组流。有一个叫作Arrays.stream()的方法可以接受一个数组并产生一个流 ：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">words.stream()</span><br><span class="line">    .map(word -&gt; word.split(<span class="string">""</span>))<span class="comment">// 每个单词转换为由其字母构成的数组</span></span><br><span class="line">    .map(Arrays::stream)<span class="comment">// 让每个数组变成一个单独的流</span></span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <p>当前的解决方案仍然搞不定！ 这是因为，你现在得到的是 Stream&lt;Stream&lt;String&gt;&gt;。</p>
 <p>现在flatMap终于派上用场了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; uniqueCharacters = words.stream()</span><br><span class="line">    .map(w -&gt; w.split(<span class="string">""</span>))</span><br><span class="line">    .flatMap(Arrays::stream)</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8flatMap%E6%89%BE%E5%87%BA%E5%8D%95%E8%AF%8D%E5%88%97%E8%A1%A8%E4%B8%AD%E5%90%84%E4%B8%8D%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AD%97%E7%AC%A6.png" alt="使用flatMap找出单词列表中各不相同的字符 "></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8flatMap%E6%89%BE%E5%87%BA%E5%8D%95%E8%AF%8D%E5%88%97%E8%A1%A8%E4%B8%AD%E5%90%84%E4%B8%8D%E7%9B%B8%E5%90%8C%E7%9A%84%E5%AD%97%E7%AC%A6.PNG" alt="使用flatMap找出单词列表中各不相同的字符"></p>
 <p>上面的代码也可以直接写成：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; uniqueCharacters = words.stream()</span><br><span class="line">    .flatMap(w -&gt; Arrays.stream(w.split(<span class="string">""</span>)))</span><br><span class="line">    .distinct()</span><br><span class="line">    .collect(toList());</span><br></pre></td></tr></table></figure>
 <h3 id="查找和匹配">查找和匹配</h3>
@@ -680,7 +680,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>通常，就像ToListCollector的情况一样，累加器对象恰好符合预期的最终结果，因此无需进行转换。所以finisher方法只需返回identity函数：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Function&lt;List&lt;T&gt;, List&lt;T&gt;&gt; finisher() &#123;</span><br><span class="line">	<span class="keyword">return</span> Function.identity();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对于顺序流的处理过程，理解supplier、accumulator和finisher三个函数就够了：</p>
-<p><img src="/2019/06/03/Java8-之-Stream/%E9%A1%BA%E5%BA%8F%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E6%AD%A5%E9%AA%A4.png" alt="顺序归约过程的逻辑步骤 "></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E9%A1%BA%E5%BA%8F%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B%E7%9A%84%E9%80%BB%E8%BE%91%E6%AD%A5%E9%AA%A4.PNG" alt="顺序归约过程的逻辑步骤"></p>
 <p>对于并行流而言，由于会将流分割成几个子任务并发收集，所以同时会存在多个收集重启，所以最终需要使用combiner函数将这些部分结果容器合并成一个最终的结果容器。</p>
 <dl>
 <dt>BinaryOperator&lt;A&gt; combiner();</dt>
@@ -689,7 +689,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <p>对于toList而言，这个方法的实现非常简单，只要把从流的第二个部分收集到的项目列表加到遍历第一部分时得到
 的列表后面就行了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> BinaryOperator&lt;List&lt;T&gt;&gt; combiner() &#123;</span><br><span class="line">    <span class="keyword">return</span> (list1, list2) -&gt; </span><br><span class="line">    			&#123;list1.addAll(list2);<span class="keyword">return</span> list1; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8combiner%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B9%B6%E8%A1%8C%E5%8C%96%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B.png" alt="使用combiner方法来并行化归约过程"></p>
+<p><img src="/2019/06/03/Java8-之-Stream/%E4%BD%BF%E7%94%A8combiner%E6%96%B9%E6%B3%95%E6%9D%A5%E5%B9%B6%E8%A1%8C%E5%8C%96%E5%BD%92%E7%BA%A6%E8%BF%87%E7%A8%8B.PNG" alt="使用combiner方法来并行化归约过程"></p>
 <p>Set&lt;Characteristics&gt; characteristics()</p>
 <p>： 会返回一个不可变的Characteristics集合，提供了一系列特征，也就是一个提示列表，告诉collect方法在执行归约操作的时候可以应用哪些优化（比如并行化）。</p>
 <p>Characteristics是一个包含三个项目的枚举：</p>
@@ -796,7 +796,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
         <div class="article-comment" id="article-comment">
             
 
-<h1>评论</h1>
+<h1>Comment</h1>
 
   
     <div id="valine"></div>
@@ -813,8 +813,8 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 <footer id="footer">
     <div class="footer-copyright">
         <div>
-            <p> 版权所有 <a href>Li JunFeng </a> @ 2019</p>
-            <p>设计: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> 和 <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; 主题: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; 由 <a href="http://hexo.io">Hexo.</a> 强力驱动</p>
+            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
         </div>
     </div>
     
@@ -858,7 +858,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="归档">
+			<a href="/archives/" title="Archives">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -867,7 +867,7 @@ Lambda表达式来筛选高卡路里的菜肴，而用不着去复制粘贴代�
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="搜索">
+			<a href="/search/" title="Search">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
