@@ -568,6 +568,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <h2 id="运行">运行</h2>
 <h2 id="对spring-boot监控">对Spring Boot监控</h2>
 <p>原始数据查询</p>
+<p>查询rate只能通过查询语句，因为prometheus收集的是原始数据。<a href="https://micrometer.io/docs/concepts" target="_blank" rel="noopener">Micrometer文档之Rate aggregation</a></p>
 <p>查询语句查询</p>
 <h1 id="grafana">Grafana</h1>
 <h1 id="参考资料">参考资料</h1>
@@ -738,7 +739,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_c31e21ccccd50ff3e9903cfb28145c822702e8f5b7e5dbe0b7938a843c897e84', function(){});
+    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_e253fb5382bbf7abcc7130061690ce737cae4e73e9f3af7267e27f945524e7ce', function(){});
   });
   
 </script>

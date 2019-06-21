@@ -436,7 +436,7 @@ Spring Cloud 的各个项目基于Spring Boot，将Netflix的多个框架进行�
 <h2 id="eureka架构">Eureka架构</h2>
 <p>一个简单的 Eureka 集群，需要一个 <code>Eureka 服务器</code>、若干个<code>服务提供者</code> 。 业务组件作为服务提供者将自己注册到 Eureka 服务器上，其他组件作为<code>Eureka客户端</code>可以向Eureka服务器获取组件列表并且进行远程调用。</p>
 <p><img src="https://github.com/Netflix/eureka/raw/master/images/eureka_architecture.png" alt="Eureka架构图"></p>
-<p>图中有3个<code>Eureka服务器</code>，服务器支持集群部署，每个服务器也可以作为对方服务器的客户端进行相互注册与复制。图中共有4个 <code>Eureka 客户端</code>，3个为<code>服务提供者</code>用于发布服务，另一个为<code>服务调用者</code>（或成为消费者） 。 不管是服务器还是客户端，都可以部署多个实例 ，如此一来 ， 就很容易构建高可用的服务集群 。</p>
+<p>图中有3个<code>Eureka服务器</code>，服务器支持集群部署，每个服务器也可以作为对方服务器的客户端进行相互注册与复制。图中共有4个 <code>Eureka 客户端</code>，2个为<code>服务提供者</code>用于发布服务，另2个为<code>服务调用者</code>（或成为消费者） 。 不管是服务器还是客户端，都可以部署多个实例 ，如此一来 ， 就很容易构建高可用的服务集群 。</p>
 <h2 id="构建eureka服务器">构建Eureka服务器</h2>
 <p>建议使用Spring Initializr创建。</p>
 <p><img src="/2019/06/18/Spring-Cloud-Eureka/create-eureka-server.PNG" alt="使用Spring Initializr创建Eureka服务器项目"></p>
@@ -771,7 +771,7 @@ THE SELF PRESERVATION MODE IS TURNED OFF. THIS MAY NOT PROTECT INSTANCE EXPIRY I
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_9b6fbd1b8e302660d445a970df0e9cc0fc183ed1c8f8d93189b43321f6ea50a8').update('hashit_f6be26c138249c04c8618c95b3f8da98eb6c631d832d369b3ad5a22500dac417', function(){});
+    new Postv2('hashit_9b6fbd1b8e302660d445a970df0e9cc0fc183ed1c8f8d93189b43321f6ea50a8').update('hashit_68de0b82b2fd808378e58d88975998d7ac74a6be1c8cc677421b34d80f688e59', function(){});
   });
   
 </script>
