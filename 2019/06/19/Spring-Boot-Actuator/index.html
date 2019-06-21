@@ -111,7 +111,7 @@
 
 <div class="toc-container">
 <i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a></li></ol>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#metrics端点"><span class="toc-number">2.1.</span> <span class="toc-text">Metrics端点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#prometheus"><span class="toc-number">3.</span> <span class="toc-text">Prometheus</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#是什么"><span class="toc-number">3.1.</span> <span class="toc-text">是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行"><span class="toc-number">3.2.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对spring-boot监控"><span class="toc-number">3.3.</span> <span class="toc-text">对Spring Boot监控</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grafana"><span class="toc-number">4.</span> <span class="toc-text">Grafana</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
 </div>
 <div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
     <img src="/images/icons/colorful-outlined/toc.svg" alt>
@@ -123,7 +123,7 @@
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="Archives">
+			<a href="/archives/" title="Archivi">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -132,7 +132,7 @@
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="Search">
+			<a href="/search/" title="Cerca">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
@@ -157,16 +157,16 @@
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Spring Cloud/">
-						<span>Spring cloud</span>
+					<a class="nav-link" href="/categories/Spring Boot/">
+						<span>Spring boot</span>
 					</a>
 				</div>
 		</div>
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Spring Boot/">
-						<span>Spring boot</span>
+					<a class="nav-link" href="/categories/Spring Cloud/">
+						<span>Spring cloud</span>
 					</a>
 				</div>
 		</div>
@@ -237,7 +237,7 @@
          
          <div class="article-logo">
             <a href="#" data-no-instant>
-                <img src="/images/icon/Spring Cloud.svg" alt onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" ">
+                <img src="/images/icon/spring-boot-admin.svg" alt onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" ">
             </a>
          </div>
          
@@ -374,7 +374,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 
 <div class="toc-container">
 <i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a></li></ol>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#metrics端点"><span class="toc-number">2.1.</span> <span class="toc-text">Metrics端点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#prometheus"><span class="toc-number">3.</span> <span class="toc-text">Prometheus</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#是什么"><span class="toc-number">3.1.</span> <span class="toc-text">是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行"><span class="toc-number">3.2.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对spring-boot监控"><span class="toc-number">3.3.</span> <span class="toc-text">对Spring Boot监控</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grafana"><span class="toc-number">4.</span> <span class="toc-text">Grafana</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
 </div>
 <div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
     <img src="/images/icons/colorful-outlined/toc.svg" alt>
@@ -392,34 +392,34 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <p>Spring Boot Admin 提供了很多功能，如显示 name、id 和 version，显示在线状态，Loggers 的日志级别管理，Threads 线程管理，Environment 管理等。</p>
 <h2 id="创建spring-boot-admin服务端">创建Spring Boot Admin服务端</h2>
 <p>使用Spring Initializr创建：</p>
-<p>![create springboot-admin-server](Spring-Boot-Actuator/create springboot-admin-server.PNG)</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/create-springboot-admin-server.PNG" alt="create springboot-admin-server"></p>
 <p>创建后的pom.xml关键部分如下，其实就只是加入了<code>spring-boot-admin-starter-server</code>依赖:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-starter-server<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-boot-admin.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>在<code>application.yml</code>中配置<code>server.port=8888</code>，让它运行在8888端口</p>
 <p>在运行主类上使用<code>@EnableAdminServer</code></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="meta">@EnableAdminServer</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LearnSpringBootAdminApplication</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SpringApplication.run(LearnSpringBootAdminApplication.class, args);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>运行该应用，访问localhost:8888</p>
-<p>![init springboot-admin-server](Spring-Boot-Actuator/init springboot-admin-server.PNG)</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/init-springboot-admin-server.PNG" alt="init springboot-admin-server"></p>
 <p>Spring Boot Admin已经正常启动，下面我们启动一个应用，并在Admin上进行监控、管理。</p>
 <h2 id="将应用注册到spring-boot-admin">将应用注册到Spring Boot Admin</h2>
 <p>可以直接在已有项目中直接引入<code>spring-boot-admin-starter-client</code>依赖。</p>
 <p>我们这里直接创建一个新的项目，还是推荐使用Spring Initializr：</p>
-<p>![create springboot-admin-client](Spring-Boot-Actuator/create springboot-admin-client.PNG)</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/create-springboot-admin-client.PNG" alt="create-springboot-admin-client"></p>
 <p>创建后的pom.xml关键部分如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.6.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-starter-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencyManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>de.codecentric<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-admin-dependencies<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>$&#123;spring-boot-admin.version&#125;<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">type</span>&gt;</span>pom<span class="tag">&lt;/<span class="name">type</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">scope</span>&gt;</span>import<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencyManagement</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>application.yml中指定Admin服务器的地址，和本服务的运行端口(8000)、服务名</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">spring.boot.admin.client.url:</span> <span class="string">"http://localhost:8888"</span></span><br><span class="line"><span class="string">server.port:</span> <span class="number">8000</span></span><br><span class="line"><span class="string">spring.application.name:</span> <span class="string">GreetingServer</span></span><br></pre></td></tr></table></figure>
-<p>![init springboot-admin-client](Spring-Boot-Actuator/init springboot-admin-client.PNG)</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/init-springboot-admin-client.PNG" alt="init springboot-admin-client"></p>
 <p>点击该应用，进入该应用的监控界面。</p>
-<p>![before open actuator](D:\payegis\myblog\source_posts\Spring-Boot-Actuator\before open actuator.png)</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/before-open-actuator.png" alt="before open actuator"></p>
 <p>什么监控信息都看不到！</p>
 <p>接下来，就需要使用Spring Boot Actuator暴露指标信息，供Spring Boot Admin使用。</p>
 <p>修改GreetingServer应用的application.yml：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">spring.boot.admin.client.url:</span> <span class="string">"http://localhost:8888"</span></span><br><span class="line"><span class="string">server.port:</span> <span class="number">8000</span></span><br><span class="line"><span class="string">spring.application.name:</span> <span class="string">GreetingServer</span></span><br><span class="line"><span class="comment"># 暴露所有actuator端点</span></span><br><span class="line"><span class="string">management.endpoints.web.exposure.include:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># 暴露服务健康自检的详细信息</span></span><br><span class="line"><span class="string">management.endpoint.health.show-details:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
-<p>重启GreetingServer应用，再次进入Spring Boot Admin：</p>
-<p>![after open actuator](D:\payegis\myblog\source_posts\Spring-Boot-Actuator\after open actuator.png)</p>
-<p><img src="Spring-Boot-Actuator/admin-httptrace.png" alt="httptrace"></p>
+<p>重启GreetingServer应用，再次进入Spring Boot Admin：
+<img src="/2019/06/19/Spring-Boot-Actuator/after-open-actuator.png" alt="after open actuator"></p>
 <p>可以查看JVM、系统变量、Bean、HTTP连接等等监控，还可以通过JMX对运行时的配置进行修改。</p>
+<p><img src="Spring-Boot-Actuator/httptrace.png" alt="httptrace"></p>
 <p>显然，是Spring Boot Actuator提供了服务监控、管理等强大功能。下面，进入Actuator的详细介绍吧。</p>
 <h1 id="spring-boot-actuator">Spring Boot Actuator</h1>
 <p>Spring Boot Actuator可以帮助你监控和管理Spring Boot应用，比如健康检查、审计、统计和HTTP追踪等。所有的这些特性可以通过JMX或者HTTP endpoints来获得。</p>
@@ -427,16 +427,152 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <p>引言中的GreetingServer应用，由于pom依赖了<code>spring-boot-admin-starter-client</code>，从而间接依赖了Actuator。现在我们抛开Spring Boot Admin，只讨论Actuator，所以将pom修改如下：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.1.5.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">relativePath</span>/&gt;</span> <span class="comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span><span class="comment">&lt;!-- 加入actuator依赖 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>application.yml不变，启动应用，访问localhost:8000/actuator，展示了当前Actuator暴露的endpoint，由于在yml中配置了<code>management.endpoints.web.exposure.include: &quot;*&quot;</code>，所以当前可以访问所有endpoint。</p>
-<p><img src="/2019/06/19/Spring-Boot-Actuator/D:%5Cpayegis%5Cmyblog%5Csource_posts%5CSpring-Boot-Actuator_actuator.png" alt="_actuator"></p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/actuator.png" alt="_actuator"></p>
 <p>比如访问health终端：</p>
-<p><img src="/2019/06/19/Spring-Boot-Actuator/D:%5Cpayegis%5Cmyblog%5Csource_posts%5CSpring-Boot-Actuator_actuator_health.png" alt="_actuator"></p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/actuator_health.png" alt="actuator"></p>
 <p>health终端显示了健康自检的详细情况，这是因为yml中配置了<code>management.endpoint.health.show-details: always</code>，该值默认为never，那么就不会展示每个<code>HealthIndicator</code>的详情，而只说明整个服务是否可用的最终结论。如{�status�:�DOWN�}。</p>
 <p>在“detials”中，有一个名字为&quot;my&quot;的HealthIndicator，这是因为我实现了一个名为<code>MyHealthIndicator</code>自定义的<code>HealthIndicator</code>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyHealthIndicator</span> <span class="keyword">implements</span> <span class="title">HealthIndicator</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> DB_ERROR = <span class="number">1001</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Health <span class="title">health</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (GreetingController.canVisitDb) &#123;</span><br><span class="line">            <span class="comment">//成功连接数据库，返回 UP</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> Health.Builder(Status.UP).build();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//连接数据库失败，返回 out of service</span></span><br><span class="line">            <span class="keyword">return</span> Health.down().withDetail(<span class="string">"连接数据库失败"</span>, DB_ERROR).build();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>关于服务健康自检，可以参考我的<a href="https://lijunfeng722.github.io/2019/06/18/Spring-Cloud-Eureka/#%E6%9C%8D%E5%8A%A1%E5%81%A5%E5%BA%B7%E8%87%AA%E6%A3%80" target="_blank" rel="noopener">《Spring-Cloud-Eureka》服务健康自检一节</a></p>
 <p>Actuator的<code>/health</code>端点、和其他所有暴露的端点(endpoint)的信息都可以被其他监控服务所拉取，比如引言中的Spring Boot Admin。</p>
 <p><img src="/2019/06/19/Spring-Boot-Actuator/HealthIndicator.png" alt="HealthIndicator"></p>
-<p>下面的表格展示了Actuator的所有endpoint</p>
+<p>下面的表格展示了Actuator的所有预定义endpoint</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>描述</th>
+<th>默认启用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>auditevents</td>
+<td>显示当前应用程序的审计事件信息</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>beans</td>
+<td>显示一个应用中<code>所有Spring Beans</code>的完整列表</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>conditions</td>
+<td>显示<code>配置类和自动配置类</code>(configuration and auto-configuration classes)的状态及它们被应用或未被应用的原因</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>configprops</td>
+<td>显示一个所有<code>@ConfigurationProperties</code>的集合列表</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>env</td>
+<td>显示来自Spring的 <code>ConfigurableEnvironment</code>的属性</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>flyway</td>
+<td>显示数据库迁移路径，如果有的话</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>health</td>
+<td>显示应用的<code>健康信息</code>（当使用一个未认证连接访问时显示一个简单的’status’，使用认证连接访问则显示全部信息详情）</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>info</td>
+<td>显示任意的<code>应用信息</code></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>liquibase</td>
+<td>展示任何Liquibase数据库迁移路径，如果有的话</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>metrics</td>
+<td>展示当前应用的<code>metrics</code>信息</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>mappings</td>
+<td>显示一个所有<code>@RequestMapping</code>路径的集合列表</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>scheduledtasks</td>
+<td>显示应用程序中的<code>计划任务</code></td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>sessions</td>
+<td>允许从Spring会话支持的会话存储中检索和删除(retrieval and deletion)用户会话。使用Spring Session对反应性Web应用程序的支持时不可用。</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>shutdown</td>
+<td>允许应用以优雅的方式关闭（默认情况下不启用）</td>
+<td>No</td>
+</tr>
+<tr>
+<td>threaddump</td>
+<td>执行一个线程dump</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>如果使用web应用(Spring MVC, Spring WebFlux, 或者 Jersey)，你还可以使用以下端点：</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>描述</th>
+<th>默认启用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>heapdump</td>
+<td>返回一个GZip压缩的<code>hprof</code>堆dump文件</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>jolokia</td>
+<td>通过HTTP暴露<code>JMX beans</code>（当Jolokia在类路径上时，WebFlux不可用）</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>logfile</td>
+<td>返回<code>日志文件内容</code>（如果设置了logging.file或logging.path属性的话），支持使用HTTP <strong>Range</strong>头接收日志文件内容的部分信息</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>prometheus</td>
+<td>以可以被Prometheus服务器抓取的格式显示<code>metrics</code>信息</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="metrics端点">Metrics端点</h2>
+<p>Spring Boot 2.0中，内部指标的统计使用 <a href="https://www.baeldung.com/micrometer" target="_blank" rel="noopener">Micrometer</a>，我们可以从<code>/actuator/metrics</code>获得都有那些指标：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"names"</span>: [</span><br><span class="line">    <span class="string">"jvm.gc.pause"</span>,</span><br><span class="line">    <span class="string">"jvm.buffer.memory.used"</span>,</span><br><span class="line">    <span class="string">"jvm.memory.used"</span>,</span><br><span class="line">    <span class="string">"jvm.buffer.count"</span>,</span><br><span class="line">    // ...</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要获得特定metric的实际值，比如<code>jvm.gc.pause</code>，可以访问<code>/actuator/metrics/jvm.gc.pause</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"jvm.gc.pause"</span>,</span><br><span class="line">  <span class="attr">"measurements"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"statistic"</span>: <span class="string">"Count"</span>,</span><br><span class="line">      <span class="attr">"value"</span>: <span class="number">3.0</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"statistic"</span>: <span class="string">"TotalTime"</span>,</span><br><span class="line">      <span class="attr">"value"</span>: <span class="number">7.9E7</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"statistic"</span>: <span class="string">"Max"</span>,</span><br><span class="line">      <span class="attr">"value"</span>: <span class="number">7.9E7</span></span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">"availableTags"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"tag"</span>: <span class="string">"cause"</span>,</span><br><span class="line">      <span class="attr">"values"</span>: [</span><br><span class="line">        <span class="string">"Metadata GC Threshold"</span>,</span><br><span class="line">        <span class="string">"Allocation Failure"</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"tag"</span>: <span class="string">"action"</span>,</span><br><span class="line">      <span class="attr">"values"</span>: [</span><br><span class="line">        <span class="string">"end of minor GC"</span>,</span><br><span class="line">        <span class="string">"end of major GC"</span></span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另外可以配置/info端点的内容、自定义端点、对端点进行访问控制等，详情可以参考官方文档。</p>
+<p>引言中的Spring Boot Admin就是通过收集这些metrics，然后展示到UI界面的。</p>
+<h1 id="prometheus">Prometheus</h1>
+<h2 id="是什么">是什么</h2>
+<p>架构图</p>
+<h2 id="运行">运行</h2>
+<h2 id="对spring-boot监控">对Spring Boot监控</h2>
+<p>原始数据查询</p>
+<p>查询语句查询</p>
+<h1 id="grafana">Grafana</h1>
+<h1 id="参考资料">参考资料</h1>
+<p><a href="https://blog.csdn.net/alinyua/article/details/80009435" target="_blank" rel="noopener">Spring Boot 2.0官方文档之 Actuator</a></p>
+<p><a href="https://www.baeldung.com/spring-boot-actuators" target="_blank" rel="noopener">baeldung.com/spring-boot-actuators</a></p>
 
     
     </div>
@@ -445,7 +581,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
         <div class="article-comment" id="article-comment">
             
 
-<h1>Comment</h1>
+<h1>Commento</h1>
 
   
     <div id="valine"></div>
@@ -463,7 +599,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
     <div class="footer-copyright">
         <div>
             <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
-            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> e <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Tema: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
         </div>
     </div>
     
@@ -495,7 +631,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 
 <div class="toc-container">
 <i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
-<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a></li></ol>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言-从spring-boot-admin说起"><span class="toc-number">1.</span> <span class="toc-text">引言-从Spring Boot Admin说起</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建spring-boot-admin服务端"><span class="toc-number">1.1.</span> <span class="toc-text">创建Spring Boot Admin服务端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#将应用注册到spring-boot-admin"><span class="toc-number">1.2.</span> <span class="toc-text">将应用注册到Spring Boot Admin</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#spring-boot-actuator"><span class="toc-number">2.</span> <span class="toc-text">Spring Boot Actuator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#metrics端点"><span class="toc-number">2.1.</span> <span class="toc-text">Metrics端点</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#prometheus"><span class="toc-number">3.</span> <span class="toc-text">Prometheus</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#是什么"><span class="toc-number">3.1.</span> <span class="toc-text">是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行"><span class="toc-number">3.2.</span> <span class="toc-text">运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对spring-boot监控"><span class="toc-number">3.3.</span> <span class="toc-text">对Spring Boot监控</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#grafana"><span class="toc-number">4.</span> <span class="toc-text">Grafana</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考资料"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
 </div>
 <div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
     <img src="/images/icons/colorful-outlined/toc.svg" alt>
@@ -507,7 +643,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 		
 				<div class="nav-icon">
 				
-			<a href="/archives/" title="Archives">
+			<a href="/archives/" title="Archivi">
 			<img src="/images/icons/colorful-outlined/archive.svg" alt>
 			</a>
 		</div>
@@ -516,7 +652,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 		
 		<div class="nav-icon">
 		
-			<a href="/search/" title="Search">
+			<a href="/search/" title="Cerca">
 			<img src="/images/icons/colorful-outlined/search.svg" alt>
 			</a>
 		</div>
@@ -541,16 +677,16 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Spring Cloud/">
-						<span>Spring cloud</span>
+					<a class="nav-link" href="/categories/Spring Boot/">
+						<span>Spring boot</span>
 					</a>
 				</div>
 		</div>
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Spring Boot/">
-						<span>Spring boot</span>
+					<a class="nav-link" href="/categories/Spring Cloud/">
+						<span>Spring cloud</span>
 					</a>
 				</div>
 		</div>
@@ -602,7 +738,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_9652e117b8a0f7adc9d941c9aff70de5fcedf389d1238419aed427170b2aeb3f', function(){});
+    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_c31e21ccccd50ff3e9903cfb28145c822702e8f5b7e5dbe0b7938a843c897e84', function(){});
   });
   
 </script>

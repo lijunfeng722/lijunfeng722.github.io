@@ -1528,8 +1528,8 @@ html {
 @media only screen and (max-width: 600px) {
   .toc-container {
     position: fixed;
-    top: 30vh;
-    right: 0;
+    top: 10em;
+    right: 2vw;
   }
 }
 .toc-container {
