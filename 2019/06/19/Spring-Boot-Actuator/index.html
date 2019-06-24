@@ -563,17 +563,35 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <p>另外可以配置/info端点的内容、自定义端点、对端点进行访问控制等，详情可以参考官方文档。</p>
 <p>引言中的Spring Boot Admin就是通过收集这些metrics，然后展示到UI界面的。</p>
 <h1 id="prometheus">Prometheus</h1>
+<p>革命尚未成功——Spring Boot应用引入Actuator后，具有了指标统计的功能，还需要强大的监控系统(Spring Boot Admin太弱了)。</p>
 <h2 id="是什么">是什么</h2>
 <p>架构图</p>
+<p><img src="https://prometheus.io/assets/architecture.png" alt="架构图"></p>
+<ul>
+<li>Prometheus Server: Prometheus服务端，由于存储及收集数据，提供相关api对外查询用。</li>
+<li>Exporter: 类似传统意义上的被监控端的agent，有区别的是，它不会主动推送监控数据到server端，而是等待server端定时来手机数据，即所谓的主动监控。</li>
+<li>Pushagateway: 用于网络不可直达而居于exporter与server端的中转站。比如只会运行短暂时间的应用，无法一直暴露监控数据，就需要先存储在Pushagateway。</li>
+<li>Alertmanager: 报警组件，将报警的功能单独剥离出来放在alertmanager。</li>
+<li>Web UI: Prometheus的web接口，可用于简单可视化，及语句执行或者服务状态监控。</li>
+</ul>
+<p>关系图</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/3408387-c37abcd18a49443f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="关系图"></p>
+<p>SpringBoot采用Micrometer统计指标后，通过<a href="https://micrometer.io/docs/registry/prometheus" target="_blank" rel="noopener">Micrometer Prometheus Registry</a>暴露指标，并按照要求的格式，供Prometheus服务端抓取，Prometheus提供了存储、报警、查询、高可用等功能。而Grafana则基于Prometheus的功能提供了可视化展示。</p>
 <h2 id="运行">运行</h2>
 <h2 id="对spring-boot监控">对Spring Boot监控</h2>
 <p>原始数据查询</p>
 <p>查询rate只能通过查询语句，因为prometheus收集的是原始数据。<a href="https://micrometer.io/docs/concepts" target="_blank" rel="noopener">Micrometer文档之Rate aggregation</a></p>
 <p>查询语句查询</p>
 <h1 id="grafana">Grafana</h1>
+<p>grafana 是一款采用 go 语言编写的开源应用，主要用于大规模指标数据的可视化展现，基于商业友好的 Apache License 2.0 开源协议。
+在网络架构和应用分析中最流行的时序数据展示工具，并且也在工业控制、自动化监控和过程管理等领域有着广泛的应用
+grafana有热插拔控制面板和可扩展的数据源，已经支持绝大部分常用的时序数据库，包含以下：Graphite、Elasticsearch、CloudWatch、InfluxDB、OpenTSDB、Prometheus</p>
 <h1 id="参考资料">参考资料</h1>
 <p><a href="https://blog.csdn.net/alinyua/article/details/80009435" target="_blank" rel="noopener">Spring Boot 2.0官方文档之 Actuator</a></p>
 <p><a href="https://www.baeldung.com/spring-boot-actuators" target="_blank" rel="noopener">baeldung.com/spring-boot-actuators</a></p>
+<p><a href="https://www.jianshu.com/p/82abd86ef447" target="_blank" rel="noopener">https://www.jianshu.com/p/82abd86ef447</a></p>
+<p><a href="https://blog.51cto.com/youerning/2050543" target="_blank" rel="noopener">https://blog.51cto.com/youerning/2050543</a></p>
+<p><a href="https://prometheus.io/docs/introduction/comparison/" target="_blank" rel="noopener">Prometheus与其他监控系统对比，包括Graphite、InfluxDB、Nagios等</a></p>
 
     
     </div>
@@ -739,7 +757,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_e253fb5382bbf7abcc7130061690ce737cae4e73e9f3af7267e27f945524e7ce', function(){});
+    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_b78ab1d613a1bc404e92c3f9aacfb6709317fa8db4b777f1807fa8e0b57ff483', function(){});
   });
   
 </script>

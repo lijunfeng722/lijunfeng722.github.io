@@ -514,7 +514,7 @@ Spring Cloud 的各个项目基于Spring Boot，将Netflix的多个框架进行�
 <p>分别查看两个Eureka服务端实例：</p>
 <p><img src="/2019/06/18/Spring-Cloud-Eureka/cluster-eureka1.png" alt="cluster-eureka1"></p>
 <p><img src="/2019/06/18/Spring-Cloud-Eureka/cluster-eureka2.png" alt="cluster-eureka2"></p>
-<p>当前的调用关系如下图，EurekaSever实例之间会相互注册：</p>
+<p>当前的调用关系如下图，EurekaSever实例之间会相互注册、同步信息，而每个EurekaClient只需向一个EurekaServer注册：</p>
 <p><img src="/2019/06/18/Spring-Cloud-Eureka/%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB_2server_2producer_1consumer.png" alt="调用关系_1server_2producer_1consumer"></p>
 <h2 id="服务健康自检">服务健康自检</h2>
 <p>在默认情况下， Eureka 的客户端每隔 30 秒会发送一次心跳给服务器端，告知它仍然存活。但是，在实际环境中有可能出现这种情况，客户端表面上可以正常发送心跳，但实际上服务是不可用的。
@@ -784,7 +784,7 @@ THE SELF PRESERVATION MODE IS TURNED OFF. THIS MAY NOT PROTECT INSTANCE EXPIRY I
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_9b6fbd1b8e302660d445a970df0e9cc0fc183ed1c8f8d93189b43321f6ea50a8').update('hashit_b07c868bf94d848699cbc9a6f8bc1e3c9e793baad60b21e7ba8329ce1f048fc1', function(){});
+    new Postv2('hashit_9b6fbd1b8e302660d445a970df0e9cc0fc183ed1c8f8d93189b43321f6ea50a8').update('hashit_52fc3ea85aaed3288a339ebcd98658fde7f6d32f31d8f6f0677cf17e740817f3', function(){});
   });
   
 </script>
