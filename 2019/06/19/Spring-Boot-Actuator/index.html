@@ -419,7 +419,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <p>重启GreetingServer应用，再次进入Spring Boot Admin：
 <img src="/2019/06/19/Spring-Boot-Actuator/after-open-actuator.png" alt="after open actuator"></p>
 <p>可以查看JVM、系统变量、Bean、HTTP连接等等监控，还可以通过JMX对运行时的配置进行修改。</p>
-<p><img src="Spring-Boot-Actuator/httptrace.png" alt="httptrace"></p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/httptrace.png" alt="httptrace"></p>
 <p>显然，是Spring Boot Actuator提供了服务监控、管理等强大功能。下面，进入Actuator的详细介绍吧。</p>
 <h1 id="spring-boot-actuator-a-id-acutator">Spring Boot Actuator<a id="acutator"></a></h1>
 <p>Spring Boot Actuator可以帮助你监控和管理Spring Boot应用，比如健康检查、审计、统计和HTTP追踪等。所有的这些特性可以通过JMX或者HTTP endpoints来获得。</p>
@@ -599,7 +599,7 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <li>可以通过服务发现或静态配置来发现监控目标</li>
 </ul>
 <h3 id="与spring-boot-actuator建立关系">与Spring Boot Actuator建立关系</h3>
-<p><img src="/Spring-Boot-Actuator/relationship.png" alt="关系图"></p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/relationship.png" alt="关系图"></p>
 <p>SpringBoot采用Micrometer统计指标后，通过<a href="https://micrometer.io/docs/registry/prometheus" target="_blank" rel="noopener">Micrometer Prometheus Registry</a>暴露指标，并按照要求的格式，供Prometheus服务端抓取，Prometheus提供了存储、报警、查询、高可用等功能。而Grafana则基于Prometheus的功能提供了可视化展示。</p>
 <h2 id="运行">运行</h2>
 <p>下载、运行Prometheus Server很简单。官网下载解压后直接运行就可以了。不过在运行之前先看一下Prometheus自己的配置文件初始内容</p>
