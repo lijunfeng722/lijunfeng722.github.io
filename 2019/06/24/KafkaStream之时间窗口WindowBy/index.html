@@ -149,16 +149,16 @@
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/消息队列/">
-						<span>消息队列</span>
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
 					</a>
 				</div>
 		</div>
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Java/">
-						<span>Java</span>
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
 					</a>
 				</div>
 		</div>
@@ -477,7 +477,7 @@ Kafka Stream为我们屏蔽了直接使用Kafka...</p>
 <p>Hopping time windows are <em>aligned to the epoch</em>, with the lower interval bound being inclusive and the upper bound being exclusive. “Aligned to the epoch” means that the first window starts at timestamp zero. For example, hopping windows with a size of 5000ms and an advance interval (“hop”) of 3000ms have predictable window boundaries <code>[0;5000),[3000;8000),...</code> — and <strong>not</strong> <code>[1000;6000),[4000;9000),...</code> or even something “random” like <code>[1452;6452),[4452;9452),...</code>.</p>
 </blockquote>
 <p>跳跃时间窗口<code>Hopping time windows</code>是基于时间间隔的窗口。它们为固定大小(可能)重叠的窗口建模。跳跃窗口由两个属性定义:窗口的<code>size</code>及其前进间隔<code>advance interval</code> (也称为<code>hop</code>)。前进间隔指定一个窗口相对于前一个窗口向前移动多少。例如，您可以配置一个size为5分钟、advance为1分钟的跳转窗口。由于跳跃窗口可以重叠(通常情况下确实如此)，数据记录可能属于多个这样的窗口。</p>
-<a id="hopping-window">
+<p><a id="hopping-window"></a></p>
 <p><img src="http://kafka.apache.org/23/images/streams-time-windows-hopping.png" alt="streams-time-windows-hopping"></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIME_WINDOW_SECONDS = <span class="number">5L</span>; <span class="comment">//窗口大小设为5秒</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> ADVANCED_BY_SECONDS = <span class="number">1L</span>; <span class="comment">//前进间隔1秒</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHoppingTimeWindowWithSuppress</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS))</span><br><span class="line">                    .advanceBy(Duration.ofSeconds(ADVANCED_BY_SECONDS))</span><br><span class="line">                    .grace(Duration.ZERO))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime))) <span class="comment">//剔除太旧的时间窗口</span></span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-hopping-windows-with-surpress.png" alt="test-hopping-windows-with-surpress"></p>
@@ -607,7 +607,7 @@ kafka每条消息中其实自带了时间戳，作为<code>CreateTime</code>
 </ul>
 <h1 id="参考文档">参考文档</h1>
 <p><a href="http://kafka.apache.org/23/documentation/streams/" target="_blank" rel="noopener">Kafka Stream 官方文档</a></p>
-</a>
+
     
     </div>
     
@@ -703,16 +703,16 @@ kafka每条消息中其实自带了时间戳，作为<code>CreateTime</code>
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/消息队列/">
-						<span>消息队列</span>
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
 					</a>
 				</div>
 		</div>
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
-					<a class="nav-link" href="/categories/Java/">
-						<span>Java</span>
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
 					</a>
 				</div>
 		</div>
