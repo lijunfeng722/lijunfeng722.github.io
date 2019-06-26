@@ -149,6 +149,14 @@
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
 					<a class="nav-link" href="/categories/Java/">
 						<span>Java</span>
 					</a>
@@ -418,8 +426,8 @@ Actuator在Spring Boot 1 和 Spring Boot 2中有所不同。本文使用Spring..
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">spring.boot.admin.client.url:</span> <span class="string">"http://localhost:8888"</span></span><br><span class="line"><span class="string">server.port:</span> <span class="number">8000</span></span><br><span class="line"><span class="string">spring.application.name:</span> <span class="string">GreetingServer</span></span><br><span class="line"><span class="comment"># 暴露所有actuator端点</span></span><br><span class="line"><span class="string">management.endpoints.web.exposure.include:</span> <span class="string">"*"</span></span><br><span class="line"><span class="comment"># 暴露服务健康自检的详细信息</span></span><br><span class="line"><span class="string">management.endpoint.health.show-details:</span> <span class="string">always</span></span><br></pre></td></tr></table></figure>
 <p>重启GreetingServer应用，再次进入Spring Boot Admin：
 <img src="/2019/06/19/Spring-Boot-Actuator/after-open-actuator.png" alt="after open actuator"></p>
-<p>可以查看JVM、系统变量、Bean、HTTP连接等等监控，还可以通过JMX对运行时的配置进行修改。</p>
-<p><img src="/2019/06/19/Spring-Boot-Actuator/httptrace.png" alt="httptrace"></p>
+<p>可以查看JVM、系统变量、Bean、HTTP连接等等监控，还可以通过JMX对运行时的配置进行修改</p>
+<p><img src="/2019/06/19/Spring-Boot-Actuator/trace.png" alt="trace"></p>
 <p>显然，是Spring Boot Actuator提供了服务监控、管理等强大功能。下面，进入Actuator的详细介绍吧。</p>
 <h1 id="spring-boot-actuator-a-id-acutator">Spring Boot Actuator<a id="acutator"></a></h1>
 <p>Spring Boot Actuator可以帮助你监控和管理Spring Boot应用，比如健康检查、审计、统计和HTTP追踪等。所有的这些特性可以通过JMX或者HTTP endpoints来获得。</p>
@@ -784,6 +792,14 @@ grafana有热插拔控制面板和可扩展的数据源，已经支持绝大部�
 		
 		<div class="nav-more-item">
 				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
 					<a class="nav-link" href="/categories/Java/">
 						<span>Java</span>
 					</a>
@@ -853,7 +869,7 @@ grafana有热插拔控制面板和可扩展的数据源，已经支持绝大部�
   loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
   loadjs.ready('post-version', function(){
     
-    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_a41e45c31032168dc5abaa7b1ca2b70eee9ca4b0a138fc8a5a6fd2a901f436cc', function(){});
+    new Postv2('hashit_5828073787781027e1d0b5ca4c67763723e20541e3d501fb83791278d3413524').update('hashit_99aa70ab9a4cb97c2e6b7d6948a20e297c5b887be4bf7810679e110647ed7b80', function(){});
   });
   
 </script>

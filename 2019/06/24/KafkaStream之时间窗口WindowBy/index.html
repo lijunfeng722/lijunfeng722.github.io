@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+      <title>KafkaStream之时间窗口WindowBy - HeiHeiHei</title>
+  
+
+  
+  
+  <meta name="description" content>
+  <meta name="author" content="Li JunFeng">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- load loadjs.js -->
+  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
+
+<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
+  <!-- load lightgallery -->
+<link rel="stylesheet" href="/css/lightgallery.css">
+<link rel="stylesheet" href="/libs/noty/lib/noty.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
+    
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
+
+
+<link rel="stylesheet" href="/.css">
+
+  <!-- load font awesome 5 -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <!-- load mathjax -->
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <!-- load js-cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+ 
+
+<header id="header" class="header">
+	<div class="header-title">
+		
+		<div class="header-logo">
+			<a href="/">
+				<img src="https://avatars2.githubusercontent.com/u/12017992?s=400&u=722ebc8cc275146695a49b651b96e4eb89a182c1&v=4">
+			</a>
+		</div>
+		<div class="header-text">
+			<h1>
+				<a href="/">HeiHeiHei</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id="header-nav">
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#windowby"><span class="toc-number">2.</span> <span class="toc-text">WindowBy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tumbling-time-windows"><span class="toc-number">2.1.</span> <span class="toc-text">Tumbling time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sliding-time-windows"><span class="toc-number">2.2.</span> <span class="toc-text">Sliding time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-windows"><span class="toc-number">2.3.</span> <span class="toc-text">Session Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hopping-time-windows"><span class="toc-number">2.4.</span> <span class="toc-text">Hopping time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间窗口上聚合计算的坑"><span class="toc-number">2.5.</span> <span class="toc-text">时间窗口上聚合计算的坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#time"><span class="toc-number">3.</span> <span class="toc-text">Time</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指定事件时间"><span class="toc-number">3.1.</span> <span class="toc-text">指定事件时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用内嵌的时间戳"><span class="toc-number">3.2.</span> <span class="toc-text">使用内嵌的时间戳</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文档"><span class="toc-number">5.</span> <span class="toc-text">参考文档</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Boot/">
+						<span>Spring-boot</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Cloud/">
+						<span>Spring-cloud</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+</header>
+
+ 
+
+  
+
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+    
+        
+            
+            
+        
+    
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2019/06/24/KafkaStream之时间窗口WindowBy/" data-name="KafkaStream之时间窗口WindowBy" data-version>
+
+    <!-- Title -->
+    <div class="article-header">
+         
+         <div class="article-logo">
+            <a href="#" data-no-instant>
+                <img src="/images/icon/Kafka.svg" alt onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" ">
+            </a>
+         </div>
+         
+         <h1 class="article-title">
+            <a href="/2019/06/24/KafkaStream之时间窗口WindowBy/">
+                KafkaStream之时间窗口WindowBy
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+        <ul class="article-categories">
+            
+            
+                <li><a href="/categories/消息队列/" data-no-instant>
+                    <img src="/images/消息队列.svg" alt="消息队列" onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" " title="消息队列">
+                </a></li>
+            
+        </ul>
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class="article-meta">
+    <ul>
+            <li><i class="fa fa-calendar"></i> 2019-06-24</li>
+            
+            <li class="comment-button"><a href="#article-comment"><i class="fa fa-comments"></i> <span id="article-comment-count">0</span></a></li>
+            <li><i class="fa fa-eye"></i> <span id="article-visit-count">0</span></li>
+            <li class="thumb-up-button" id="thumb-up-button"><i class="far fa-thumbs-up fa-lg" id="thumb-up-icon"></i> <span id="article-thumbup-count">0</span></li>
+            
+            <li><i class="fa fa-user"></i> Li JunFeng</li>
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
+    
+<div class="tags">
+	
+		
+			<label class="tag-1"><a href="/tags/Kafka/">Kafka</a></label>
+		
+	
+		
+			<label class="tag-2"><a href="/tags/Kafka-Stream/">Kafka-stream</a></label>
+		
+	
+		
+			<label class="tag-3"><a href="/tags/时间窗口/">时间窗口</a></label>
+		
+	
+	</div>
+
+    </div>
+    <div class="article-cards">
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                Li JunFeng
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id="chart-post-visit"></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id="text-post-summary">Kafka Stream的大部分API还是比较容易理解和使用的，但是，其中的时间窗口聚合即windowBy方法还是需要仔细研究下，否则很容易使用错误。
+本文先引入Kafka Stream，然后主要针对时间窗口聚合API即windowBy()做详细分析。
+
+引言
+Kafka Streams是一个用于构建应用程序和微服务的客户端库，其中的输入和输出数据存储在Kafka集群中。它结合了在客户端编写和部署Java/Scala应用程序的简单性，以及Kafka服务器集群的优点。
+Kafka Stream为我们屏蔽了直接使用Kafka...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id="article-toc">
+    
+        
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#windowby"><span class="toc-number">2.</span> <span class="toc-text">WindowBy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tumbling-time-windows"><span class="toc-number">2.1.</span> <span class="toc-text">Tumbling time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sliding-time-windows"><span class="toc-number">2.2.</span> <span class="toc-text">Sliding time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-windows"><span class="toc-number">2.3.</span> <span class="toc-text">Session Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hopping-time-windows"><span class="toc-number">2.4.</span> <span class="toc-text">Hopping time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间窗口上聚合计算的坑"><span class="toc-number">2.5.</span> <span class="toc-text">时间窗口上聚合计算的坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#time"><span class="toc-number">3.</span> <span class="toc-text">Time</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指定事件时间"><span class="toc-number">3.1.</span> <span class="toc-text">指定事件时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用内嵌的时间戳"><span class="toc-number">3.2.</span> <span class="toc-text">使用内嵌的时间戳</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文档"><span class="toc-number">5.</span> <span class="toc-text">参考文档</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+    </div>
+    <div class="article-content">
+    <p>Kafka Stream的大部分<a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html" target="_blank" rel="noopener">API</a>还是比较容易理解和使用的，但是，其中的时间窗口聚合即windowBy方法还是需要仔细研究下，否则很容易使用错误。</p>
+<p>本文先引入Kafka Stream，然后主要针对时间窗口聚合API即windowBy()做详细分析。</p>
+<a id="more"></a>
+<h1 id="引言">引言</h1>
+<p>Kafka Streams是一个用于构建应用程序和微服务的客户端库，其中的输入和输出数据存储在Kafka集群中。它结合了在客户端编写和部署Java/Scala应用程序的简单性，以及Kafka服务器集群的优点。</p>
+<p>Kafka Stream为我们屏蔽了直接使用Kafka Consumer的复杂性，不用手动进行轮询poll()，不必关心commit()。而且，使用Kafka Stream，可以方便的进行实时计算、实时分析。</p>
+<p>比如官方<a href="http://kafka.apache.org/23/documentation/streams/quickstart" target="_blank" rel="noopener">Demo</a>，统计topic中不同单词的出现次数：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WordCountApplication</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(<span class="keyword">final</span> String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">        Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">        props.put(StreamsConfig.APPLICATION_ID_CONFIG, <span class="string">"wordcount-application"</span>);</span><br><span class="line">        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, <span class="string">"localhost:9092"</span>);</span><br><span class="line">        props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, <span class="string">"500"</span>);<span class="comment">// 默认30s commit一次</span></span><br><span class="line">        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());</span><br><span class="line">        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());</span><br><span class="line"></span><br><span class="line">        StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">        <span class="comment">// 从名为“TextLinesTopic”的topic创建流。</span></span><br><span class="line">        KStream&lt;String, String&gt; textLines = builder.stream(<span class="string">"TextLinesTopic"</span>);</span><br><span class="line"></span><br><span class="line">        KTable&lt;String, Long&gt; wordCounts =</span><br><span class="line">                textLines.flatMapValues(textLine -&gt; Arrays.asList(textLine.toLowerCase().split(<span class="string">"\\W+"</span>)))</span><br><span class="line">                         .groupBy((key, word) -&gt; word)</span><br><span class="line">                         .count();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 官方文档实例中是 wordCounts.toStream().to("WordsWithCountsTopic", Produced.with(Serdes.String(), Serdes.Long())); 直接写回kafka</span></span><br><span class="line">        <span class="comment">// 我们这里为了方便观察，直接打印到控制台</span></span><br><span class="line">        wordCounts.toStream().print(Printed.toSysOut());</span><br><span class="line"></span><br><span class="line">        KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(builder.build(), props);</span><br><span class="line">        streams.start();</span><br><span class="line"></span><br><span class="line">        Thread.currentThread().join();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>启动程序、kafka服务端。</p>
+<p>启动kafka-console-producer, 创建主题TextLinesTopic0，并发送消息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic TextLinesTopic</span><br><span class="line"></span><br><span class="line"> .\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic TextLinesTopic0</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/word-count.png" alt="word-count"></p>
+<p>可以看到，每次向kafka写入一条消息后，我们的demo程序在控制台会<strong>立即</strong>输出产生变化的数据统计。</p>
+<p>这其中的简单原理可以参考http://kafka.apache.org/23/documentation/streams/quickstart#quickstart_streams_process。我们的流计算应用保存一个<code>KTable&lt;String, Long&gt;</code> 用来记录统计条目，随着流中元素的到来，KTable中的统计条目发生变化，这些变化回发送到下游流中（本文中的下游流就是控制台）。</p>
+<p>借助KafkaStream的API，我们可以方便的编写实时计算应用。比如上面的groupBy、count方法，再比如接下来的windowBy方法，如果不使用KafakStream，直接使用Kafka Consumer自行实现，则比较麻烦。</p>
+<p>Kafka Stream的大部分<a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html" target="_blank" rel="noopener">API</a>还是比较容易理解和使用的，但是，其中的时间窗口聚合即windowBy方法还是需要仔细研究下，否则很容易使用错误。</p>
+<h1 id="windowby">WindowBy</h1>
+<p>根据时间窗口做聚合，是在实时计算中非常重要的功能。比如我们经常需要统计最近一段时间内的count、sum、avg等统计数据。</p>
+<p><a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#windowing" target="_blank" rel="noopener">Kafka中有这样四种时间窗口</a>。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Window name</th>
+<th style="text-align:left">Behavior</th>
+<th style="text-align:left">Short description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#windowing-tumbling" target="_blank" rel="noopener">Tumbling time window</a></td>
+<td style="text-align:left">Time-based</td>
+<td style="text-align:left">Fixed-size, non-overlapping, gap-less windows</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#windowing-hopping" target="_blank" rel="noopener">Hopping time window</a></td>
+<td style="text-align:left">Time-based</td>
+<td style="text-align:left">Fixed-size, overlapping windows</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#windowing-sliding" target="_blank" rel="noopener">Sliding time window</a></td>
+<td style="text-align:left">Time-based</td>
+<td style="text-align:left">Fixed-size, overlapping windows that work on differences between record timestamps</td>
+</tr>
+<tr>
+<td style="text-align:left"><a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#windowing-session" target="_blank" rel="noopener">Session window</a></td>
+<td style="text-align:left">Session-based</td>
+<td style="text-align:left">Dynamically-sized, non-overlapping, data-driven windows</td>
+</tr>
+</tbody>
+</table>
+<h2 id="tumbling-time-windows">Tumbling time windows</h2>
+<p>翻滚时间窗口<code>Tumbling time windows</code>是跳跃时间窗口<code>hopping time windows</code>的一种特殊情况，与后者一样，翻滚时间窗也是基于时间间隔的。但它是固定大小、不重叠、无间隙的窗口。翻滚窗口只由一个属性定义：<code>size</code>。翻滚窗口实际上是一种跳跃窗口，其<code>窗口大小</code>与其<code>前进间隔</code>相等。由于翻滚窗口从不重叠，数据记录将只属于一个窗口。</p>
+<p><img src="http://kafka.apache.org/23/images/streams-time-windows-tumbling.png" alt="streams-time-windows-tumbling"></p>
+<blockquote>
+<p>Tumbling time windows are <strong><em>aligned to the epoch</em></strong>, with the lower interval bound being inclusive and the upper bound being exclusive. “Aligned to the epoch” means that the first window starts at timestamp zero. For example, tumbling windows with a size of 5000ms have predictable window boundaries <code>[0;5000),[5000;10000),...</code> — and <strong>not</strong> <code>[1000;6000),[6000;11000),...</code> or even something “random” like <code>[1452;6452),[6452;11452),...</code>.</p>
+</blockquote>
+<p>看个翻滚窗口的例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String BOOT_STRAP_SERVERS = <span class="string">"localhost:9092"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String TEST_TOPIC = <span class="string">"test_topic"</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIME_WINDOW_SECONDS = <span class="number">5L</span>; <span class="comment">//时间窗口大小</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTumblingTimeWindows</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS)))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((windowedKey, value) -&gt; <span class="keyword">this</span>.isOldWindow(windowedKey, value, initTime))) <span class="comment">//剔除太旧的时间窗口，程序二次启动时，会重新读取历史数据进行整套流处理，为了不影响观察，这里过滤掉历史数据</span></span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Test启动前启动一个KafkaProducer，每1秒产生一条数据，数据的key为“service_1”，value为“key@当前时间”。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BeforeClass</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">generateValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">    props.put(<span class="string">"bootstrap.servers"</span>, BOOT_STRAP_SERVERS);</span><br><span class="line">    props.put(<span class="string">"key.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">    props.put(<span class="string">"value.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">    props.put(<span class="string">"request.required.acks"</span>, <span class="string">"0"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Producer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">1L</span>);</span><br><span class="line">                Instant now = Instant.now();</span><br><span class="line">                String key = <span class="string">"service_1"</span>;</span><br><span class="line">                String value = key + <span class="string">"@"</span> + toLocalTimeStr(now);</span><br><span class="line">                producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(TEST_TOPIC, key, value));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            producer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">toLocalTimeStr</span><span class="params">(Instant i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i.atZone(ZoneId.systemDefault()).toLocalDateTime().toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是些公共代码，之后的例子也有会用到 :</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> Properties <span class="title">configStreamProperties</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">    props.put(StreamsConfig.APPLICATION_ID_CONFIG, <span class="string">"streams-ljf-test"</span>);</span><br><span class="line">    props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, BOOT_STRAP_SERVERS);</span><br><span class="line">    props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());</span><br><span class="line">    props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());</span><br><span class="line">    props.put(StreamsConfig.COMMIT_INTERVAL_MS_CONFIG, <span class="string">"500"</span>);<span class="comment">//todo 默认值为30s，会导致30s才提交一次数据。</span></span><br><span class="line">    <span class="keyword">return</span> props;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">isOldWindow</span><span class="params">(Windowed&lt;String&gt; windowKey, Long value, Instant initTime)</span> </span>&#123;</span><br><span class="line">    Instant windowEnd = windowKey.window().endTime();</span><br><span class="line">    <span class="keyword">return</span> windowEnd.isBefore(initTime);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">dealWithTimeWindowAggrValue</span><span class="params">(Windowed&lt;String&gt; key, Long value)</span> </span>&#123;</span><br><span class="line">    Windowed&lt;String&gt; windowed = getReadableWindowed(key);</span><br><span class="line">    System.out.println(<span class="string">"处理聚合结果：key="</span> + windowed + <span class="string">",value="</span> + value);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Windowed&lt;String&gt; <span class="title">getReadableWindowed</span><span class="params">(Windowed&lt;String&gt; key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Windowed&lt;String&gt;(key.key(), key.window()) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            String startTimeStr = toLocalTimeStr(Instant.ofEpochMilli(window().start()));</span><br><span class="line">            String endTimeStr = toLocalTimeStr(Instant.ofEpochMilli(window().end()));</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"["</span> + key() + <span class="string">"@"</span> + startTimeStr + <span class="string">"/"</span> + endTimeStr + <span class="string">"]"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的testTumblingTimeWindows()中，创建了一个流任务，先groupByKey()，再调用count()计算每个时间窗口的消息个数。我们创建了一个size为5秒的翻滚时间窗口。而且generateValue()方法中启动了一个Producer，每隔一秒发送一条消息。使用JUnit运行testTumblingTimeWindows()，控制台输出如下(在创建流计算逻辑时，我们最后使用<code>foreach(this::dealWithTimeWindowAggrValue)</code>将上游流(这里是filterNot方法的结果)传来的元素打印到控制台)：</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-tumbling-windows-1.png" alt="test-tumbling-windows-1"></p>
+<p>可以看到，每个时间窗口统计到5的时候，重新从1开始count。这也印证了翻滚窗口的特性。</p>
+<p>这里我们再看下groupByKey的特性。</p>
+<p>如果将generateValue()方法改为，模拟另一个服务也在发送消息：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BeforeClass</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">generateValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">    <span class="comment">// ...配置不变，此处省略</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Producer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">1L</span>);</span><br><span class="line">                Instant now = Instant.now();</span><br><span class="line">                String key = <span class="string">"service_1"</span>;</span><br><span class="line">                String value = key + <span class="string">"@"</span> + toLocalTimeStr(now);</span><br><span class="line">                producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(TEST_TOPIC, key, value));</span><br><span class="line">                String key2 = <span class="string">"service_2"</span>; <span class="comment">// 模拟另一个服务也在发送消息</span></span><br><span class="line">                producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(TEST_TOPIC, key2, value));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            producer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>重新运行testTumblingTimeWindows():</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-tumbling-windows-groupbykey.png" alt="test-tumbling-windows-groupbykey"></p>
+<p>可以看到，我们的流任务根据key的不同先做group，在进行时间窗口的聚合。</p>
+<p>PS：类似groupByKey，还有groupBy，前者可以看做后者的特化，后者可以根据消Message的key、value自定义分组逻辑。关于此，可以参考API官方文档<a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#stateless-transformations" target="_blank" rel="noopener">Stateless transformations</a></p>
+<h2 id="sliding-time-windows">Sliding time windows</h2>
+<p>Sliding windows are actually quite different from hopping and tumbling windows. In Kafka Streams, sliding windows are used only for <a href="http://kafka.apache.org/23/documentation/streams/developer-guide/dsl-api.html#streams-developer-guide-dsl-joins" target="_blank" rel="noopener">join operations</a>, and can be specified through the <code>JoinWindows</code> class.</p>
+<p>A sliding window models a fixed-size window that slides continuously over the time axis; here, two data records are said to be included in the same window if (in the case of symmetric windows) the difference of their timestamps is within the window size. Thus, sliding windows are <strong>not aligned to the epoch, but to the data record timestamps</strong>. In contrast to hopping and tumbling windows, the lower and upper window time interval bounds of sliding windows are <em>both inclusive</em>.</p>
+<h2 id="session-windows">Session Windows</h2>
+<p>Session windows are used to aggregate key-based events into so-called <em>sessions</em>, the process of which is referred to as <em>sessionization</em>. Sessions represent a <strong>period of activity</strong> separated by a defined <strong>gap of inactivity</strong> (or “idleness”). Any events processed that fall within the inactivity gap of any existing sessions are merged into the existing sessions. If an event falls outside of the session gap, then a new session will be created.</p>
+<p><img src="http://kafka.apache.org/23/images/streams-session-windows-02.png" alt="streams-session-windows-02"></p>
+<h2 id="hopping-time-windows">Hopping time windows</h2>
+<p>我们口中的“滑动窗口”，在Kafka这里叫做跳跃窗口。</p>
+<blockquote>
+<p><strong>Note</strong>
+<strong>Hopping windows vs. sliding windows:</strong> Hopping windows are sometimes called “sliding windows” in other stream processing tools. Kafka Streams follows the terminology in academic literature, where the semantics of sliding windows are different to those of hopping windows.</p>
+</blockquote>
+<blockquote>
+<p>Hopping time windows are <em>aligned to the epoch</em>, with the lower interval bound being inclusive and the upper bound being exclusive. “Aligned to the epoch” means that the first window starts at timestamp zero. For example, hopping windows with a size of 5000ms and an advance interval (“hop”) of 3000ms have predictable window boundaries <code>[0;5000),[3000;8000),...</code> — and <strong>not</strong> <code>[1000;6000),[4000;9000),...</code> or even something “random” like <code>[1452;6452),[4452;9452),...</code>.</p>
+</blockquote>
+<p>跳跃时间窗口<code>Hopping time windows</code>是基于时间间隔的窗口。它们为固定大小(可能)重叠的窗口建模。跳跃窗口由两个属性定义:窗口的<code>size</code>及其前进间隔<code>advance interval</code> (也称为<code>hop</code>)。前进间隔指定一个窗口相对于前一个窗口向前移动多少。例如，您可以配置一个size为5分钟、advance为1分钟的跳转窗口。由于跳跃窗口可以重叠(通常情况下确实如此)，数据记录可能属于多个这样的窗口。</p>
+<a id="hopping-window">
+<p><img src="http://kafka.apache.org/23/images/streams-time-windows-hopping.png" alt="streams-time-windows-hopping"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIME_WINDOW_SECONDS = <span class="number">5L</span>; <span class="comment">//窗口大小设为5秒</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> ADVANCED_BY_SECONDS = <span class="number">1L</span>; <span class="comment">//前进间隔1秒</span></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHoppingTimeWindowWithSuppress</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS))</span><br><span class="line">                    .advanceBy(Duration.ofSeconds(ADVANCED_BY_SECONDS))</span><br><span class="line">                    .grace(Duration.ZERO))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime))) <span class="comment">//剔除太旧的时间窗口</span></span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-hopping-windows-with-surpress.png" alt="test-hopping-windows-with-surpress"></p>
+<p>注意到上面的代码中，我们还用到了<code>grace(Duration.ZERO)</code>和<code>suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</code></p>
+<p>后者的意思是：抑制住上游流的输出，直到当前时间窗口关闭后，才向下游发送数据。前面我们说过，每当统计值产生变化时，统计的结果会立即发送给下游。但是有些情况下，比如我们从kafka中的消息记录了应用程序的每次gc时间，我们的流任务需要统计每个时间窗口内的平均gc时间，然后发送给下游(下游可能是直接输出到控制台，也可能是另一个kafka topic或者一段报警逻辑)。那么，只要当这个时间窗口关闭时，向下游发送一个最终结果就够了。而且有的情况下，如果窗口还没关闭就发送到下游，可能导致错误的逻辑（比如数据抖动产生误报警）。</p>
+<p>grace的意思是，设立一个数据晚到的期限，这个期限过了之后时间窗口才关闭。比如窗口大小为5，当15:20的时候，15:15-15:20的窗口应当关闭了，但是为了防止网络延时导致数据晚到，比如15点22分的时候，有可能才接收时间戳是15点20分的数据。所以我们可以把这个晚到时间设为2分钟，那么知道15点22的时候，15:15-15:20的窗口才关闭。</p>
+<p>注意一个坑：**如果使用<code>Suppressed.untilWindowCloses</code>，那么窗口必须要指定grace。因为默认的grace时间是24小时。所以24小时之内窗口是一直不关闭的，而且由于被suppress住了，所以下游会一直收不到结果。**另外也可以使用<code>Suppressed.untilTimeLimit</code>来指定上游聚合计算的值在多久后发往下游，它与窗口是否关闭无关，所以可以不使用grace</p>
+<p>上面的代码中，为了方便，我们令grace为0，也就是当窗口的截止时间到了后立即关闭窗口。</p>
+<p>另外我们还使用suppress，抑制住中间的计算结果。所以可以看到，每个窗口关闭后，向下游（这里就是控制台）发送了一个最终结果“5”。</p>
+<p>为了验证，我们去掉suppress方法试一下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHoppingTimeWindow</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS))</span><br><span class="line">                    .advanceBy(Duration.ofSeconds(ADVANCED_BY_SECONDS))</span><br><span class="line">                    .grace(Duration.ZERO))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime)))</span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果如下：</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-hopping-windows-without-surpress.png" alt="test-hopping-windows-without-surpress"></p>
+<p>如果不仔细观察，可能会觉得结果很乱。所以我用方框做了区分：</p>
+<p>51秒时第一个消息到达，使得<u>所在的5个窗口</u><u>都进行聚合计算</u>count后，结果<u>立即发往下游</u>，所以是1,1,1,1,1。</p>
+<p>52秒时第二个消息到达，所在的5个窗口都进行count累加计算后，结果立即发往下游，所以是2,2,2,2,1。注意到，最后的“1”是新的窗口（51秒-56秒窗口）的累加计算，所以值为1。而“46秒-51秒”这个窗口由于已经关闭，就不会再进行累加计算，从而不会有新的结果发送给下游输出。</p>
+<p>53秒第三个消息到达，之前的2,2,2,2,1的第一个“2”所在窗口关闭了，然后剩下的三个分别加1，变成了3,3,3,2。另外还有一个新的时间窗口打开。所以最后得到3,3,3,2,1。</p>
+<h2 id="时间窗口上聚合计算的坑">时间窗口上聚合计算的坑</h2>
+<p>上面我特意强调了两点，一是所在的窗口<strong>都</strong>进行聚合计算，二是聚合计算的结果<strong>立即</strong>发往下游。第二点我们已经验证了。我们将最开始Tumbling time window的程序加上suppres进一步验证一下。</p>
+<h3 id="聚合计算结果何时到达下游">聚合计算结果何时到达下游</h3>
+<p>之前的代码会输出123451234512345…，而且每个12345都是同一个窗口输出的。可见聚合结果计算后，默认会立即发给下游。</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-tumbling-windows-1.png" alt="test-tumbling-windows-1"></p>
+<p>改变代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTumblingTimeWindowWithSuppress</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS)).grace(Duration.ZERO))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime))) </span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-tumbling-windows-with-suppress.png" alt="test-tumbling-windows-with-suppress"></p>
+<p>可以看到，只有当窗口关闭后，窗口的聚合结果才会发送到下游。所以最终下游只得到了555555…</p>
+<h3 id="何时进行聚合计算">何时进行聚合计算</h3>
+<p>我们再来看下第一点：当新的数据到来时，所在的时间窗口都会进行聚合计算。</p>
+<p>有的人可能会误解，如果使用了<code>Suppressed.untilWindowCloses</code>，是不是只用在窗口关闭时进行一次求和计算就好了。其实不是这样的，只要一个数据落到了某个窗口内（同一数据可以落到多个窗口），窗口便会立即进行聚合计算。</p>
+<p>我们继续使用testTumblingTimeWindowWithSuppress()的例子，改动如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testTumblingTimeWindowWithSuppress</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS)).grace(Duration.ZERO))</span><br><span class="line">        .aggregate(() -&gt; <span class="number">0L</span>, <span class="keyword">this</span>::aggrDataInTimeWindow, Materialized.with(Serdes.String(), Serdes.Long())) <span class="comment">// 使用自定义aggregator</span></span><br><span class="line">        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime))) </span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Long <span class="title">aggrDataInTimeWindow</span><span class="params">(String key, String value, Long curValue)</span> </span>&#123;</span><br><span class="line">    curValue++;</span><br><span class="line">    System.out.println(<span class="string">"聚合计算：key="</span> + key + <span class="string">",value="</span> + value + <span class="string">"\nafter aggr, curValue="</span> + curValue);</span><br><span class="line">    <span class="keyword">return</span> curValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之前我们使用count()方法，现在我们使用aggregate()方法来达到count的同样功能，另外打印一行日志，这样我们就可以知道何时进行的聚合计算。</p>
+<p>PS：aggregate方法接收三个参数，第一个指明聚合计算的初始值，第二个指明如何将流中当前元素累加到历史的聚合值上，第三个指明聚合计算后key和value的数据类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;VR&gt; KTable&lt;Windowed&lt;K&gt;, VR&gt; aggregate(<span class="keyword">final</span> Initializer&lt;VR&gt; initializer,</span><br><span class="line">                                 <span class="keyword">final</span> Aggregator&lt;? <span class="keyword">super</span> K, ? <span class="keyword">super</span> V, VR&gt; aggregator,</span><br><span class="line">                                 <span class="keyword">final</span> Materialized&lt;K, VR, WindowStore&lt;Bytes, <span class="keyword">byte</span>[]&gt;&gt; materialized);</span><br></pre></td></tr></table></figure>
+<p>运行后：</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/aggregator-called-tumbling-windows.png" alt="aggregator-called-tumbling-windows"></p>
+<p>可以看到，虽然被suppress了，但是聚合函数会在每次数据到来时被调用。</p>
+<p>进一步地，我们在使用hopping time windows 进行验证：<u>到达的数据落到的每个窗口上，都会立即、分别调用该窗口的聚合函数。</u></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testHoppingTimeWindowWithSuppress</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS))</span><br><span class="line">                    .advanceBy(Duration.ofSeconds(ADVANCED_BY_SECONDS))</span><br><span class="line">                    .grace(Duration.ZERO))</span><br><span class="line">        .aggregate(() -&gt; <span class="number">0L</span>, <span class="keyword">this</span>::aggrDataInTimeWindow, Materialized.with(Serdes.String(), Serdes.Long())) <span class="comment">// 使用自定义aggregator</span></span><br><span class="line">        .suppress(Suppressed.untilWindowCloses(Suppressed.BufferConfig.unbounded()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime))) </span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line"></span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line"></span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/aggregator-called-hopping-windows.png" alt="aggregator-called-hopping-windows"></p>
+<p>可以看到，由于我们设置的时间窗口size=5s，前进间隔hop=1s，所以每个数据可以同时落到5个窗口内（<a href="hopping-window">见图</a>）。</p>
+<h3 id="小结">小结</h3>
+<p>明白了事件窗口的聚合计算逻辑，我们在编程是就可以避免一些错误。比如自定义聚合函数时，Aggregator内应当只负责聚合计算，不应把其他的逻辑(比如将计算结果保存到db)写到Aggreagator里面。如果这样做了，一旦修改了时间窗口的配置，修改了时间窗口类型、grace、suppress等，会导致混乱的结果。Aggreagator应当只封装聚合算法，而其他的逻辑如filter、map等应当单独封装。</p>
+<h1 id="time">Time</h1>
+<p>最后我们研究下Kafka Stream中的时间概念。</p>
+<p>上面我们利用时间窗口进行了实时计算，用起来很方便。但是你有没有想过，当我们的流任务收到一条消息时，是如何定义这条消息的时间戳呢？</p>
+<p>这个问题其实不光是Kafka Stream的问题，也牵扯到Kafka基本生产者消费者模型。但是由于实时计算的特点，在Kafka Stream中需要格外关注。</p>
+<p>Kafka有这样几个时间概念： <a href="http://kafka.apache.org/23/documentation/streams/core-concepts#streams_time" target="_blank" rel="noopener">http://kafka.apache.org/23/documentation/streams/core-concepts#streams_time</a></p>
+<ul>
+<li>Event time - 事件时间：事件真正发生的时间点，比如一个GPS设备在某刻捕获到了位置变化，产生了一个记录，这就是事件时间。（也就是说，事件时间与Kafka无关）</li>
+<li>Processing time - 处理时间：KafkaStream应用处理数据的时间点，即消息被应用消费时的时间点。此时间点比EventTime晚，有可能是毫秒、小时甚至几天。</li>
+<li>Ingestion time - 摄入时间：消息被存入到Kafka的时间点。（准确地说是存入到Topic分区的时间点）。</li>
+</ul>
+<p><u>摄入时间与事件时间的区别</u>：前者是消息存入到topic的时间，后者是事件发生的事件。
+<u>摄入时间与处理时间的去表</u>：后者是被KafkaStream应用消费到的时间点。如果一个记录从未被消费，则它拥有摄入时间而没有处理时间。</p>
+<blockquote>
+<p>The choice between event-time and ingestion-time is actually done through the configuration of Kafka (not Kafka Streams): From Kafka 0.10.x onwards, timestamps are automatically embedded into Kafka messages. Depending on Kafka’s configuration these timestamps represent event-time or ingestion-time. The respective Kafka configuration setting can be specified on the broker level or per topic. <strong>The default timestamp extractor in Kafka Streams will retrieve these embedded timestamps as-is.</strong> Hence, the effective time semantics of your application depend on the effective Kafka configuration for these embedded timestamps.</p>
+</blockquote>
+<h2 id="指定事件时间">指定事件时间</h2>
+<p>应用可以自行将事件时间信息保存到消息内容里，然后将消息发送到kafka。在KafkaStream应用中，继承TimeStampExtractor，在重载的extract方法中定义如何从消息中抽取时间时间。并在构造KafkaStream的props里配置上该自定义的时间提取器。</p>
+<p>比如我们自定义一个TimeStampExtractor，它可以从消息体中抽取我们在发送时写入的时间信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyTimestampExtractor</span> <span class="keyword">implements</span> <span class="title">TimestampExtractor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">extract</span><span class="params">(ConsumerRecord&lt;Object, Object&gt; record, <span class="keyword">long</span> timeMill)</span> </span>&#123;</span><br><span class="line">        String value = record.value().toString();</span><br><span class="line">        String eventTimeStr = value.split(<span class="string">"@"</span>)[<span class="number">1</span>]; <span class="comment">//发送消息时 value = key + "@" + timeStr</span></span><br><span class="line">        LocalDateTime eventTime = LocalDateTime.parse(eventTimeStr);</span><br><span class="line">        Instant instant = eventTime.toInstant(ZoneOffset.ofHours(<span class="number">8</span>));</span><br><span class="line">        <span class="keyword">return</span> instant.toEpochMilli();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们在发送消息的时候，将时间信息放到消息内容里，但是我们做个小把戏，将时间对齐到每分钟的0秒。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@BeforeClass</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">generateValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Properties props = <span class="keyword">new</span> Properties();</span><br><span class="line">    props.put(<span class="string">"bootstrap.servers"</span>, BOOT_STRAP_SERVERS);</span><br><span class="line">    props.put(<span class="string">"key.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">    props.put(<span class="string">"value.serializer"</span>, <span class="string">"org.apache.kafka.common.serialization.StringSerializer"</span>);</span><br><span class="line">    props.put(<span class="string">"request.required.acks"</span>, <span class="string">"0"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        Producer&lt;String, String&gt; producer = <span class="keyword">new</span> KafkaProducer&lt;&gt;(props);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">1L</span>);</span><br><span class="line">                Instant now = Instant.now();</span><br><span class="line">                String key = <span class="string">"service_1"</span>;</span><br><span class="line">                <span class="comment">// 将时间信息放到消息内容里，但是我们做个小把戏，将时间对齐到每分钟的0秒</span></span><br><span class="line">                String value = key + <span class="string">"@"</span> + alignToMinute(now);</span><br><span class="line">                producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(TEST_TOPIC, key, value));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            producer.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后需要指定使用我们自定义的时间提取器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> TIME_WINDOW_SECONDS = <span class="number">5L</span>;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEventTime</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    <span class="comment">// 指定使用自定义的时间提取器</span></span><br><span class="line">    props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, MyTimestampExtractor.class);</span><br><span class="line"></span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line"></span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS))) <span class="comment">// 使用翻滚窗口</span></span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime)))</span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line">    </span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line">    </span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们的窗口大小仍然是5秒，使用翻滚窗口，聚合计算的值立即输出到下游（控制台）。</p>
+<p>还记的在Tumbling time windows小节里的例子吗，当时的输出是123451234512345…。但是我们现在使用自定义时间提取器，从消息内容里提取时间信息，而在发送时做了点小把戏，所以在同一分钟内接收到的消息，提出来的时间都是0秒的，也就是都会落到第一个时间窗口内(0秒-5秒窗口)。</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-eventtime.png" alt="test-eventtime"></p>
+<h2 id="使用内嵌的时间戳">使用内嵌的时间戳</h2>
+<p>如果不制定自定义的时间提取器，时间又是哪里来的呢？
+kafka每条消息中其实自带了时间戳，作为<code>CreateTime</code>
+我们在发送消息时，一般时这样写的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">producer.send(<span class="keyword">new</span> ProducerRecord&lt;&gt;(TOPIC, key, value)</span><br></pre></td></tr></table></figure>
+<p>看线<code>ProducerRecord</code>的这个构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ProducerRecord</span><span class="params">(String topic, K key, V value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(topic, <span class="keyword">null</span>, <span class="keyword">null</span>, key, value, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Creates a record with a specified timestamp to be sent to a specified topic and partition</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> topic The topic the record will be appended to</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> partition The partition to which the record should be sent</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> timestamp The timestamp of the record, in milliseconds since epoch. If null, the producer will assign</span></span><br><span class="line"><span class="comment">     *                  the timestamp using System.currentTimeMillis().</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key The key that will be included in the record</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> value The record contents</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> headers the headers that will be included in the record</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ProducerRecord</span><span class="params">(String topic, Integer partition, Long timestamp, K key, V value, Iterable&lt;Header&gt; headers)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们注意到第三个参数，如果传入的是null，则会使用<code>System.currentTimeMillis()</code></p>
+<p>KafkaStream在不配置自定义TimeStampExtractor时，会使用这个消息中内嵌的时间戳，而这个时间戳可能是Producer程序中<code>ProducerRecord</code>生成的时候的时刻，也可能是消息写入到topic的log文件中的时刻。</p>
+<p>相关配置：<code>message.timestamp.type</code>。</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>desc</th>
+<th>type</th>
+<th>default</th>
+<th>VALID VALUES</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>message.timestamp.type</td>
+<td>Define whether the timestamp in the message is message create time or log append time</td>
+<td>string</td>
+<td>CreateTime</td>
+<td>[CreateTime, LogAppendTime]</td>
+</tr>
+</tbody>
+</table>
+<p>该配置在broker和topic维度上可分别配置。</p>
+<p>我们再进行实验，这次不配置自定义的<code>TimestampExtractor</code>了。这时默认的TimeStampExtractor会使用消息中内嵌的时间戳。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testEventTime</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">    Properties props = configStreamProperties();</span><br><span class="line">    <span class="comment">// 指定使用自定义的时间提取器</span></span><br><span class="line">    <span class="comment">// props.put(StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, MyTimestampExtractor.class);</span></span><br><span class="line"></span><br><span class="line">    StreamsBuilder builder = <span class="keyword">new</span> StreamsBuilder();</span><br><span class="line">    KStream&lt;String, String&gt; data = builder.stream(TEST_TOPIC);</span><br><span class="line"></span><br><span class="line">    Instant initTime = Instant.now();</span><br><span class="line">    data.groupByKey()</span><br><span class="line">        .windowedBy(TimeWindows.of(Duration.ofSeconds(TIME_WINDOW_SECONDS)))</span><br><span class="line">        .count(Materialized.with(Serdes.String(), Serdes.Long()))</span><br><span class="line">        .toStream()</span><br><span class="line">        .filterNot(((key, value) -&gt; <span class="keyword">this</span>.isOldWindow(key, value, initTime)))</span><br><span class="line">        .foreach(<span class="keyword">this</span>::dealWithTimeWindowAggrValue);</span><br><span class="line">    </span><br><span class="line">    Topology topology = builder.build();</span><br><span class="line">    KafkaStreams streams = <span class="keyword">new</span> KafkaStreams(topology, props);</span><br><span class="line">    streams.start();</span><br><span class="line">    Thread.currentThread().join();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在发送的时候，传入内嵌的时间戳的值，但是我们做个小把戏，将时间对齐到每分钟的30秒。这时默认的TimeStampExtractor从内嵌的时间戳提取出来后，会发现他们都落在“30秒-35秒”这个窗口内。</p>
+<p><img src="/2019/06/24/KafkaStream之时间窗口WindowBy/test-embed-time.png" alt="test-embed-time"></p>
+<p>上面讲的是流任务面对收到的消息时，如何获取时间信息。</p>
+<p>而当流任务如果要将处理过的内容打回Kafka时，是如何添加时间信息的呢？</p>
+<blockquote>
+<p>Whenever a Kafka Streams application writes records to Kafka, then it will also assign timestamps to these new records. The way the timestamps are assigned depends on the context:</p>
+<ul>
+<li>When new output records are generated via processing some input record, for example, <code>context.forward()</code> triggered in the <code>process()</code>function call, output record timestamps are inherited from input record timestamps directly.</li>
+<li>When new output records are generated via periodic functions such as <code>Punctuator#punctuate()</code>, the output record timestamp is defined as the current internal time (obtained through <code>context.timestamp()</code>) of the stream task.</li>
+<li>For aggregations, the timestamp of a resulting aggregate update record will be that of the latest arrived input record that triggered the update.</li>
+</ul>
+<p>Note, that the describe default behavior can be changed in the Processor API by assigning timestamps to output records explicitly when calling <code>#forward()</code>.</p>
+</blockquote>
+<h1 id="总结">总结</h1>
+<ul>
+<li>Kafka Stream中有4种时间窗口：<code>Tumbling time window</code>、<code>Hopping time window</code>、<code>sliding time window</code>、<code>session time window</code></li>
+<li>可以使用supress方法不让每次新的数据落到窗口内时，都立即向下游发送新的统计值。</li>
+<li>如果使用<code>Suppressed.untilWindowCloses</code>，那么窗口必须要指定grace。因为默认的grace时间是24小时。所以24小时之内窗口是一直不关闭的，而且由于被suppress住了，所以下游会一直收不到结果。</li>
+<li>可以使用<code>Suppressed.untilTimeLimit</code>来指定上游聚合计算的值在多久后发往下游，它与时间窗口是否关闭无关，所以可以不使用grace。</li>
+<li>到达的数据落到的每个窗口上，都会立即、分别调用该窗口的聚合函数，计算结果默认情况下立即发送到下游，除非使用了suppress()。</li>
+<li>Aggregator内应当只负责聚合计算，不应把其他的逻辑(比如将计算结果保存到db)写到Aggreagator里面。如果这样做了，一旦修改了时间窗口的配置，修改了时间窗口类型、grace、suppress等，会导致混乱的结果。</li>
+<li>KafkaStream的默认TimeStampExtractor，会提取消息中内嵌的时间戳，供依赖于时间的操作(如windowBy)使用。这个时间戳可能是Producer程序中<code>ProducerRecord</code>生成的时刻，也可能是消息写入到topic的log文件中的时刻，取决于<code>message.timestamp.type</code>配置。</li>
+<li>如果要使用事件时间，发送消息时可将事件时间信息保存到消息内容里，然后将消息发送到kafka。在KafkaStream应用中，继承TimeStampExtractor，在重载的extract方法中定义如何从消息中抽取时间时间。并在构造KafkaStream的props里配置上该自定义的时间提取器。</li>
+</ul>
+<h1 id="参考文档">参考文档</h1>
+<p><a href="http://kafka.apache.org/23/documentation/streams/" target="_blank" rel="noopener">Kafka Stream 官方文档</a></p>
+</a>
+    
+    </div>
+    
+    
+        <div class="article-comment" id="article-comment">
+            
+
+<h1>Comment</h1>
+
+  
+    <div id="valine"></div>
+  
+
+
+        </div>
+        
+</article>
+  </div>
+
+  
+
+<footer id="footer">
+    <div class="footer-copyright">
+        <div>
+            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class="footer-social">
+        
+            
+                
+                    <div class="footer-social-item"><a href="https://github.com/lijunfeng722" target="_blank"><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+        
+    </div>
+</footer>
+
+  <br>
+
+  <div id="footer-nav" class='footer-nav'>
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#引言"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#windowby"><span class="toc-number">2.</span> <span class="toc-text">WindowBy</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#tumbling-time-windows"><span class="toc-number">2.1.</span> <span class="toc-text">Tumbling time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sliding-time-windows"><span class="toc-number">2.2.</span> <span class="toc-text">Sliding time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session-windows"><span class="toc-number">2.3.</span> <span class="toc-text">Session Windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hopping-time-windows"><span class="toc-number">2.4.</span> <span class="toc-text">Hopping time windows</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间窗口上聚合计算的坑"><span class="toc-number">2.5.</span> <span class="toc-text">时间窗口上聚合计算的坑</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#time"><span class="toc-number">3.</span> <span class="toc-text">Time</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#指定事件时间"><span class="toc-number">3.1.</span> <span class="toc-text">指定事件时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用内嵌的时间戳"><span class="toc-number">3.2.</span> <span class="toc-text">使用内嵌的时间戳</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考文档"><span class="toc-number">5.</span> <span class="toc-text">参考文档</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Boot/">
+						<span>Spring-boot</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Cloud/">
+						<span>Spring-cloud</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+
+  
+
+
+
+    
+    
+    
+    
+<script>
+    new Valine({
+        el: '#valine',
+        notify:false, 
+        verify:false,
+        appId: 'V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz',
+        appKey: 'rWMxYnrvsMGqWwJFbczwXkPY',
+        placeholder: 'write your comment',
+        path:window.location.pathname, 
+        avatar:'retro',
+        lang: 'en'
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+  
+  // update cookie if this page is opened (directly)
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
+  loadjs.ready('post-version', function(){
+    
+    new Postv2('hashit_b0e9e17a3ad29c2c7f64e1b5407e362fce58b0f627cf8655bc62bde0275a7b06').update('hashit_53f26b18f9e4688be35307a5c34bca39c57bb7ee8b1dff439711f6ffdb7c0276', function(){});
+  });
+  
+</script>
+
+
+    
+<script type="text/javascript">
+  
+  // update cookie if this page is opened (directly)
+  function getIP(json) {
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/leancloud.js'], 'post-visit-comment-count');
+  loadjs.ready('post-visit-comment-count', function(){
+    
+    
+    LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+    var leanCloud = LeanCloud.getInstance();
+    leanCloud.fetchIsThumbUp('/2019/06/24/KafkaStream之时间窗口WindowBy/', json.ip);
+    document.getElementById('thumb-up-button').addEventListener('click', function(e){
+      leanCloud.isThumbUp('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(isThumbUp){
+        console.log('is thumb up:' + isThumbUp);
+        if(isThumbUp){
+          leanCloud.removeThumbUpRecord('/2019/06/24/KafkaStream之时间窗口WindowBy/', json.ip);
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+          
+        }else{
+          leanCloud.addThumbUpRecord('/2019/06/24/KafkaStream之时间窗口WindowBy/', json.ip);
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }
+        leanCloud.getThumbUpCount('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(count){
+            console.log('thumb up count: ' + count)
+            var el = document.getElementById('article-thumbup-count');
+            if(el) el.innerHTML = count;
+        });
+      });
+    });
+    leanCloud.addVisitRecord('/2019/06/24/KafkaStream之时间窗口WindowBy/', json.ip);
+    leanCloud.fetchCommentCount('/2019/06/24/KafkaStream之时间窗口WindowBy/');
+    leanCloud.fetchVisitCount('/2019/06/24/KafkaStream之时间窗口WindowBy/');
+    leanCloud.fetchThumbUpCount('/2019/06/24/KafkaStream之时间窗口WindowBy/');
+    leanCloud.getCommentCount('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(count){
+        var el = document.querySelector('#article-comment-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getVisitCount('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(count){
+        var el = document.querySelector('#article-visit-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getThumbUpCount('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(count){
+        var el = document.getElementById('article-thumbup-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.isThumbUp('/2019/06/24/KafkaStream之时间窗口WindowBy/', function(isThumbUp){
+        console.log('init thumb up:' + isThumbUp);
+        if(isThumbUp){
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }else{
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+        }
+    });
+  });
+  }
+  
+</script>
+
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
+
+
+<!-- <script src="/js/post.js"></script> -->
+
+<script src="/js/headroom.min.js"></script>
+
+<script data-no-instant type="text/javascript">
+
+initHeadroom();
+
+changeLayoutOnTouchScreen();
+
+// 
+// var post = new Post('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+// post.getCommentCount(window.location.pathname, function(count){
+//     $('#article-comment-count').text(count);
+// });
+// post.addVisitRecord(window.location.pathname, userip);
+// post.getVisitCount(window.location.pathname, function(count){
+//     $('#article-visit-count').text(count);
+// });
+
+// 
+</script>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
