@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  
+      <title>《NoSQL精粹》笔记 - HeiHeiHei</title>
+  
+
+  
+  
+  <meta name="description" content>
+  <meta name="author" content="Li JunFeng">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- load loadjs.js -->
+  <script src="/libs/loadjs/dist/loadjs.min.js"></script>
+
+<link rel="stylesheet" href="/libs/animate.css/animate.min.css">
+  <!-- load lightgallery -->
+<link rel="stylesheet" href="/css/lightgallery.css">
+<link rel="stylesheet" href="/libs/noty/lib/noty.css">
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  
+
+
+
+
+
+
+    <link rel="stylesheet" href="/css/taurus.css">
+    
+        <link rel="stylesheet" href="/css/scheme-taurus/animations.css">
+    
+
+
+<link rel="stylesheet" href="/.css">
+
+  <!-- load font awesome 5 -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+  });
+  </script>
+  <!-- load mathjax -->
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax//libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  <!-- load js-cookie -->
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/js/social-share.min.js"></script>
+    <script src="/js/theme.js"></script>
+
+  <!-- include cookie.js -->
+  
+  
+
+  <!-- include comment system code -->
+  
+    <script src="//cdn1.lncld.net/static/js/3.6.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh;">
+
+ 
+
+<header id="header" class="header">
+	<div class="header-title">
+		
+		<div class="header-logo">
+			<a href="/">
+				<img src="https://avatars2.githubusercontent.com/u/12017992?s=400&u=722ebc8cc275146695a49b651b96e4eb89a182c1&v=4">
+			</a>
+		</div>
+		<div class="header-text">
+			<h1>
+				<a href="/">HeiHeiHei</a>
+			</h1>
+			<subtitle>
+				
+			</subtitle>
+		</div>
+		
+	</div>
+	<div id="header-nav">
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一部分-概念"><span class="toc-number">1.</span> <span class="toc-text">第一部分 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一章-为什么使用nosql"><span class="toc-number">1.1.</span> <span class="toc-text">第一章 为什么使用NoSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-聚合数据模型"><span class="toc-number">1.2.</span> <span class="toc-text">第二章 聚合数据模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三章-数据模型详解"><span class="toc-number">1.3.</span> <span class="toc-text">第三章 数据模型详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四章-分布式模型"><span class="toc-number">1.4.</span> <span class="toc-text">第四章 分布式模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第五章-一致性"><span class="toc-number">1.5.</span> <span class="toc-text">第五章 一致性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第七章-映射-化简"><span class="toc-number">1.6.</span> <span class="toc-text">第七章 映射-化简</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同nosql类型对比"><span class="toc-number">1.7.</span> <span class="toc-text">不同NoSQL类型对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">2.</span> <span class="toc-text">参考</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Boot/">
+						<span>Spring-boot</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/DataBase/">
+						<span>Database</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Cloud/">
+						<span>Spring-cloud</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+</header>
+
+ 
+
+  
+
+
+
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div style="flex: 1;">
+      <style>
+    body {
+        background-color: white;
+    }
+</style>
+
+
+
+
+
+
+
+
+    
+        
+            
+            
+        
+    
+
+
+
+
+
+
+    
+    
+        
+    
+
+    
+        
+    
+
+
+
+
+
+
+
+
+
+<article class="article" id="/2019/07/19/《NoSQL精粹》笔记/" data-name="《NoSQL精粹》笔记" data-version>
+
+    <!-- Title -->
+    <div class="article-header">
+         
+         <h1 class="article-title">
+            <a href="/2019/07/19/《NoSQL精粹》笔记/">
+                《NoSQL精粹》笔记
+            </a>
+        </h1>
+        <!-- TODO: support nested categories,display them nicely -->
+        
+        <ul class="article-categories">
+            
+            
+                <li><a href="/categories/DataBase/" data-no-instant>
+                    <img src="/images/DataBase.svg" alt="DataBase" onerror="if(this.src != " images uncategorized.svg") this.src="/images/uncategorized.svg" " title="DataBase">
+                </a></li>
+            
+        </ul>
+        
+    </div>
+    
+    <!-- Date and Author -->
+    <div class="article-meta">
+    <ul>
+            <li><i class="fa fa-calendar"></i> 2019-07-19</li>
+            
+            <li class="comment-button"><a href="#article-comment"><i class="fa fa-comments"></i> <span id="article-comment-count">0</span></a></li>
+            <li><i class="fa fa-eye"></i> <span id="article-visit-count">0</span></li>
+            <li class="thumb-up-button" id="thumb-up-button"><i class="far fa-thumbs-up fa-lg" id="thumb-up-icon"></i> <span id="article-thumbup-count">0</span></li>
+            
+            <li><i class="fa fa-user"></i> Li JunFeng</li>
+            <li><i class="fas fa-copyright"></i>
+            
+                
+                
+            
+            
+                <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>
+            
+            </li>
+    </ul>
+    
+<div class="tags">
+	
+		
+			<label class="tag-1"><a href="/tags/NoSQL/">Nosql</a></label>
+		
+	
+	</div>
+
+    </div>
+    <div class="article-cards">
+        <!-- Author Card -->
+        <!---
+        <div class='Card-article Card-author'>
+            <div class='card-title'>
+                <h3></h3>
+            </div>
+            <div class='card-content'>
+                    <div class="author-meta">
+                            <div class='author-figure'>
+                                <img src="" alt="">
+                            </div>
+                            <div class='author-name'>
+                                Li JunFeng
+                            </div>
+                        </div>
+                        <div class="author-ai">
+                            <div class='author-intro'>
+                                <!-- TODO: auto generating author description -->
+                                <!-- 
+                            </div>
+                            <div class="author-articles">
+                                <!-- TODO: auto generating author articles -->
+                                <!-- <ul>
+                                    <li>Article 1</li>
+                                    <li>Article 2</li>
+                                    <li>Article 3</li>
+                                    <li>Article 4</li>
+                                    <li>Article 5</li>
+                                    <li>Article 6</li>
+                                </ul>
+                            </div>
+                        </div>
+            </div>
+            
+        </div> -->
+
+        <!-- Visit Card -->
+        <!-- <div class="Card-article Card-visit"> -->
+            <!-- <div class="card-title">
+  <h3>Post Visit</h3>
+</div>
+<div class="card-chart">
+  <div id="chart-post-visit"></div>
+</div> -->
+        <!-- </div> -->
+        
+        <!-- Auto Excerpt Card -->
+        <!-- <div class="Card-article Card-excerpt">
+            <div class="card-title">
+  <h3>Quick Read</h3>
+</div>
+<div class="card-text">
+  <p id="text-post-summary">本书为考虑是否可以使用和如何使用nosql数据库的企业提供了可靠的决策依据。它由世界级软件开发大师和软件开发“教父”Martin Fowler与Jolt生产效率大奖图书作者Pramod J. Sadalage共同撰写。书中全方位比较了关系型数据库与NoSQL数据库的异同；分别以Riak、Mongodb、Cassandra和Neo4J为代表，详细讲解了键值数据库、文档数据库、列族数据库和图数据库这4大类NoSQL数据库的优劣势、用法和适用场合；深入探讨了实现NoSQL数据库系统的各种细节，以及与关系型数据库的混用。
+
+第一部分 概念
+第一章...</p>
+</div>
+        </div> -->
+    </div>
+    
+    <!-- Gallery -->
+    <!-- TODO: add a slider to gallery -->
+    
+
+    <!-- Content -->
+    <!-- TODO: support table of content -->
+    <div class="article-toc" id="article-toc">
+    
+        
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一部分-概念"><span class="toc-number">1.</span> <span class="toc-text">第一部分 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一章-为什么使用nosql"><span class="toc-number">1.1.</span> <span class="toc-text">第一章 为什么使用NoSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-聚合数据模型"><span class="toc-number">1.2.</span> <span class="toc-text">第二章 聚合数据模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三章-数据模型详解"><span class="toc-number">1.3.</span> <span class="toc-text">第三章 数据模型详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四章-分布式模型"><span class="toc-number">1.4.</span> <span class="toc-text">第四章 分布式模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第五章-一致性"><span class="toc-number">1.5.</span> <span class="toc-text">第五章 一致性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第七章-映射-化简"><span class="toc-number">1.6.</span> <span class="toc-text">第七章 映射-化简</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同nosql类型对比"><span class="toc-number">1.7.</span> <span class="toc-text">不同NoSQL类型对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">2.</span> <span class="toc-text">参考</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+    </div>
+    <div class="article-content">
+    <p>本书为考虑是否可以使用和如何使用nosql数据库的企业提供了可靠的决策依据。它由世界级软件开发大师和软件开发“教父”Martin Fowler与Jolt生产效率大奖图书作者Pramod J. Sadalage共同撰写。书中全方位比较了关系型数据库与NoSQL数据库的异同；分别以Riak、Mongodb、Cassandra和Neo4J为代表，详细讲解了键值数据库、文档数据库、列族数据库和图数据库这4大类NoSQL数据库的优劣势、用法和适用场合；深入探讨了实现NoSQL数据库系统的各种细节，以及与关系型数据库的混用。</p>
+<a id="more"></a>
+<h1 id="第一部分-概念">第一部分 概念</h1>
+<h2 id="第一章-为什么使用nosql">第一章 为什么使用NoSQL</h2>
+<ul>
+<li>由于关系模型与内存中的数据结构不匹配，所以应用程序开发人员一直为这种<strong>阻抗失谐</strong>问题所困扰。</li>
+<li>促使数据存储方式发生变化的重要原因是：需要在集群上运行大量数据，而<strong>关系型数据库不能在集群中高效运行</strong>。</li>
+<li>各种NoSQL的共同特性是：
+<ul>
+<li>不使用关系模型</li>
+<li>在集群中运行良好</li>
+<li>开源</li>
+<li>无模式</li>
+</ul>
+</li>
+</ul>
+<h2 id="第二章-聚合数据模型">第二章 聚合数据模型</h2>
+<p>NoSQL技术与传统的关系型数据库相比，一个最明显的转变就是抛弃了关系模型。每种NoSQL解决方案的模型都不同：键值、文档、列族、图。前三类数据模型都有一个共同特征，我们称其为“面向聚合”。</p>
+<h3 id="聚合">聚合</h3>
+<p>虽然关系映射能很好地捕捉各种数据元素及其关系，但是它却没有“聚合实体”这一概念。在关系模型中，可以用外键来表达这种关系，但这样做也无法区分某个关系是否表示聚合。因此，<strong>无法使用结合结构来帮助其存储与分布数据</strong>。</p>
+<p>选用面向聚合模型的决定性因素，就在于它非常适合在集群上运行。此时，需要把采集数据时所需的节点数降至最小。如果在数据库中明确包含聚合结构，那么它就可以根据这一重要信息，知道哪些数据需要一起操作了，这些数据应该放在同一节点中。</p>
+<p>通常情况下，面向聚合的数据库确实不支持跨越多个聚合的ACID事务，取而代之的是，它每次只能在一个聚合结构上执行原子操作。</p>
+<h3 id="面向聚合数据库">面向聚合数据库</h3>
+<ul>
+<li>键值数据模型将聚合看做不透明的整体，这意味着，<strong>只能通过键</strong>来查询<strong>整个聚合</strong>，而不能仅仅查询或获取其中的一部分。</li>
+<li>文档模型的聚合对数据库透明，于是就<strong>可以只查询并获取其中一部分数据</strong>。不过，由于文档没有模式，因此<strong>在优化存储并获取聚合中的部分内容时，数据库不太好调整文档结构</strong>。</li>
+<li>列族模型把数据分为列族，让数据库将其视为行聚合内的一个数据单元。此类聚合的结构有某种限制（列必须属于某个列族，列族需要预先定义），但是数据库可利用此种结构的优点来提高其易访问性（一次访问列族中的所有数据）。</li>
+</ul>
+<h2 id="第三章-数据模型详解">第三章 数据模型详解</h2>
+<ul>
+<li>使用面向聚合的数据库处理不同聚合之间的关系，要比处理同一聚合内部的关系更难。</li>
+<li>图数据库将数据组织成一张由节点和边所组成的图，它们适合处理关系负责的数据结构。</li>
+<li>在无模式数据库中，可以给记录随意新增字段。然而在使用数据时，还是要在代码端，对数据结构做一系列约定。此外，由于感知不到模式，所以无法用模式提升存储与查询效率，也无法自行验证数据。</li>
+<li>面向聚合的数据库通常能够用不同方式重组主聚合的数据，以计算出各种“物化视图”（相比于普通视图，物化视图提前进行计算并保存，而不是使用时再计算）。计算过程一般通过“Map-Reduce”实现。</li>
+</ul>
+<h2 id="第四章-分布式模型">第四章 分布式模型</h2>
+<p>数据分布有两种方式，可以选中一种，也可以混合使用：</p>
+<ul>
+<li>
+<p>分片：将数据的不同部分存放在多个服务器中，每个数据子集由一台服务器专门负责。</p>
+</li>
+<li>
+<p>复制：将数据复制到多个服务器上。</p>
+<p>复制又分为两种形式：</p>
+<ul>
+<li>主从复制：将其中一个节点作为权威数据源，负责写。其他从节点和主节点保持同步，负责读。</li>
+<li>对等复制：任何节点均可写入，节点间相互协调以同步数据。</li>
+</ul>
+<p>主从复制减少了更新数据时的冲突几率，但会使主节点出现写入瓶颈。</p>
+</li>
+</ul>
+<h2 id="第五章-一致性">第五章 一致性</h2>
+<p>一致性有多种表现形式：</p>
+<ul>
+<li>更新一致性：悲观锁、乐观锁</li>
+<li>读取一致性
+<ul>
+<li>逻辑一致性：事务</li>
+<li>复制一致性：要求从不同副本中读取同一数据时，得到的值相同。解决：最终一致性</li>
+<li>read-your-writes consistency ： 照原样读出所写内容的一致性。解决：1.采用粘性会话（绑定到集群的固定节点），保证会话一致性；2.采用版本戳，保证会话一致性</li>
+</ul>
+</li>
+</ul>
+<h3 id="cap">CAP</h3>
+<blockquote>
+<p>集群必须容忍“网络分区”，这正是CAP定理的意义所在。当系统遭遇“分区”状况时(如分布式系统)，需要在“一致性”和“可用性”之间权衡。这<strong>并不是一个二选一的决定</strong>，通常来说，我们都会略微舍弃“一致性”，以获取某种程度的“可用性”。这样产生的系统，既不具备完美的一致性，也不具备完美的可用性。但是，这两种不完美的特性结合起来，却能满足特定需求。</p>
+</blockquote>
+<p>CP:</p>
+<p>M和P都想预订酒店的最后一个房间，预订系统采用“对等式分布模型”，他由两个节点组成。M使用伦敦的节点，P使用孟买的节点。若要确保一致性，那么当M要通过位于伦敦的节点预订房间时，该节点在确认预订操作之前，必须先告知位于孟买的节点。两个节点必须按照相互一直的顺序来处理他们说收到的操作请求。此方案保证了已制定，但若网络发生故障，则两个“分区”系统都无法预订，于是系统失去了可用性。</p>
+<p>权衡C与A：</p>
+<p>改善可用性的一种办法是，指派其中一个节点作为某家旅馆的主节点，确保所有预订操作都由主节点处理。假设孟买是主节点，当发生网络故障时，它仍可处理预订工作，P将订到最后一个房间。在使用“主从复制”模型时，位于伦敦的用户看到的房间剩余情况会与孟买不一致，但是他们无法预订客房，于是就出现了更新不一致。而且当发生网络故障时，位于伦敦的节点无法预订客房。</p>
+<p>AP：</p>
+<p>继续提高可用性，可以让两个分区系统都接收预订请求，即使在发生网路故障时也是如此。那么，M和P有可能都预订到了最后一间客房。</p>
+<p>在讨论分布式系统的一致性时，通常可以概括的说：<strong>参与交互操作的节点越多，一致性就越好</strong>。然而这样会导致产生交互延时，导致可用性下降。</p>
+<p>上面预订酒店的例子，就是一步步降低参与预订操作的节点数，来逐渐提高可用性的。</p>
+<h3 id="仲裁">仲裁</h3>
+<p>为了保证强一致性，不需要所有节点都确认写入操作。</p>
+<ul>
+<li>写入仲裁：参与写入的节点数W，必须超过副本总数N(又称复制因子)的一半，W&gt;N/2。如果发生两个互相冲突的写入操作，那么只有其中一个操作能成为超过半数的节点认可。</li>
+<li>读取操作：要想保证能读到最新数据，必须与多少个节点联系？R+W&gt;N。R：读操作需联系的节点个数。</li>
+</ul>
+<h2 id="第七章-映射-化简">第七章 映射-化简</h2>
+<p>把数据放在集群之后，立刻就带来一个好处，那就是可以把运算工作分布到多台计算机。然而，此时仍要试着减少通过网络传输的数据量，把某个节点所需的数据尽可能多地放在该节点上执行。</p>
+<p>map-reduace 模式是一种安排数据处理流程的手段。可以利用集群中的多台计算机，同时有能将某台计算机所需的数据及处理工作尽量放在本机完成。</p>
+<p>以下部分转自https://www.jianshu.com/p/296bacba3510</p>
+<h2 id="不同nosql类型对比">不同NoSQL类型对比</h2>
+<h3 id="键值数据库">键值数据库</h3>
+<h4 id="特点">特点</h4>
+<p>以Redis为例：
+优点如下：</p>
+<ul>
+<li>性能极高：Redis能支持超过10W的TPS</li>
+<li>丰富的数据类型： Redis支持包括String，Hash，List，Set，Sorted Set，Bitmap和hyperloglog</li>
+<li>丰富的特性：Redis还支持 publish/subscribe, 通知, key 过期等等特性</li>
+</ul>
+<p>缺点如下：
+针对ACID，Redis事务不能支持原子性和持久性(A和D)，只支持隔离性和一致性(I和C)
+特别说明一下，这里所说的无法保证原子性，是针对Redis的事务操作，因为事务是不支持回滚（roll back），而因为Redis的单线程模型，<strong>Redis的普通操作是原子性的</strong></p>
+<p>大部分业务不需要严格遵循ACID原则，例如游戏实时排行榜，粉丝关注等场景，即使部分数据持久化失败，其实业务影响也非常小。因此在设计方案时，需要根据业务特征和要求来做选择</p>
+<h4 id="使用场景">使用场景</h4>
+<ul>
+<li>
+<p>适用场景
+储存用户信息(比如会话)、配置文件、参数、购物车等等。这些信息一般都和ID（键）挂钩</p>
+</li>
+<li>
+<p>不适用场景</p>
+<ul>
+<li>需要通过值来查询，而不是键来查询。Key-Value数据库中根本没有通过值查询的途径。</li>
+<li>需要储存数据之间的关系。在Key-Value数据库中不能通过两个或以上的键来关联数据</li>
+<li>需要事务的支持。在Key-Value数据库中故障产生时不可以进行回滚。</li>
+</ul>
+</li>
+</ul>
+<h3 id="文档数据库">文档数据库</h3>
+<h4 id="相关特性">相关特性</h4>
+<p>以MongoDB为例进行说明</p>
+<p>优点如下：</p>
+<ul>
+<li>新增字段简单
+无需像关系型数据库一样先执行DDL语句修改表结构，程序代码直接读写即可</li>
+<li>容易兼容历史数据
+对于历史数据，即使没有新增的字段，也不会导致错误，只会返回空值，此时代码兼容处理即可</li>
+<li>容易存储复杂数据
+JSON是一种强大的描述语言，能够描述复杂的数据结构</li>
+</ul>
+<p>相比传统关系型数据库，文档数据库的缺点主要是对多条数据记录的事务支持较弱，具体体现如下：</p>
+<ul>
+<li>Atomicity(原子性)
+仅支持单行/文档级原子性，不支持多行、多文档、多语句原子性</li>
+<li>Isolation(隔离性)
+隔离级别仅支持已提交读（Read committed）级别，可能导致不可重复读，幻读的问题</li>
+<li>不支持复杂查询
+例如join查询，如果需要join查询，需要多次操作数据库</li>
+</ul>
+<p>MongonDB还是支持多文档事务的Consistency(一致性)和Durability(持久性)</p>
+<p>虽然官方宣布MongoDB将在4.0版本中正式推出多文档ACID事务支持，最后落地情况还有待见证。</p>
+<h4 id="使用场景-v2">使用场景</h4>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>数据量很大或者未来会变得很大</li>
+<li>表结构不明确，且字段在不断增加，例如内容管理系统，信息管理系统</li>
+</ul>
+<p><strong>不适用场景</strong>：</p>
+<ul>
+<li>在不同的文档上需要添加事务。Document-Oriented数据库并不支持文档间的事务</li>
+<li>多个文档直接需要复杂查询，例如join</li>
+</ul>
+<h3 id="列族数据库">列族数据库</h3>
+<h4 id="相关特性-v2">相关特性</h4>
+<p>优点如下：</p>
+<ul>
+<li><strong>高效的储存空间利用率</strong></li>
+</ul>
+<p>列式数据库由于其针对不同列的数据特征而发明的不同算法使其往往有比行式数据库高的多的压缩率，普通的行式数据库一般压缩率在3：1 到5：1 左右，而列式数据库的压缩率一般在8：1到30：1 左右。
+比较常见的，通过字典表压缩数据：
+下面中才是那张表本来的样子。经过字典表进行数据压缩后，表中的字符串才都变成数字了。正因为每个字符串在字典表里只出现一次了，所以达到了压缩的目的(有点像规范化和非规范化Normalize和Denomalize)</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/5618238-7622748f5a047a01.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="通过字典表压缩数据"></p>
+<ul>
+<li><strong>查询效率高</strong></li>
+</ul>
+<p>读取多条数据的同一列效率高，因为这些列都是存储在一起的，一次磁盘操作可以数据的指定列全部读取到内存中。
+下图通过一条查询的执行过程说明列式存储(以及数据压缩)的优点</p>
+<p><img src="https:////upload-images.jianshu.io/upload_images/5618238-94dfaca4551d31ae.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/565/format/webp" alt="img"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">执行步骤如下：</span><br><span class="line">i. 去字典表里找到字符串对应数字(只进行一次字符串比较)。</span><br><span class="line">ii. 用数字去列表里匹配，匹配上的位置设为1。</span><br><span class="line">iii. 把不同列的匹配结果进行位运算得到符合所有条件的记录下标。</span><br><span class="line">iv. 使用这个下标组装出最终的结果集。</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>适合大量的数据而不是小数据</strong></li>
+</ul>
+<p>缺点如下：</p>
+<ul>
+<li>不适合扫描小量数据</li>
+<li>不适合聚合计算（AVG、SUM），只能把每行数据读到客户端然后处理</li>
+<li>不适合随机的更新</li>
+<li>不适合做含有删除和更新的实时操作</li>
+<li>单行的数据是ACID的，多行的事务时，不支持事务的正常回滚，支持 I(Isolation)隔离性(事务串行提交)，D(Durability)持久性，不能保证 A(Atomicity)原子性， C(Consistency)一致性</li>
+</ul>
+<h4 id="使用场景-v3">使用场景</h4>
+<p>以HBase为例说明：</p>
+<ul>
+<li>大数据量 （100s TB级数据） 且有快速随机访问的需求</li>
+<li>同一列族常常需要一起访问</li>
+<li>写密集型应用，每天写入量巨大，而相对读数量较小的应用
+比如IM的历史消息，游戏的日志等等</li>
+<li>不需要复杂查询条件来查询数据的应用
+HBase只支持基于rowkey的查询，对于HBase来说，单条记录或者小范围的查询是可以接受的，大范围的查询由于分布式的原因，可能在性能上有点影响，HBase不适用与有join，多级索引，表关系复杂的数据模型</li>
+<li>对性能和可靠性要求非常高的应用
+由于HBase本身没有单点故障，可用性非常高。</li>
+<li>数据量较大，而且增长量无法预估的应用，需要进行优雅的数据扩展的
+HBase支持在线扩展，即使在一段时间内数据量呈井喷式增长，也可以通过HBase横向扩展来满足功能。</li>
+<li>存储结构化和半结构化的数据</li>
+</ul>
+<h1 id="参考">参考</h1>
+<p>《NoSQL精粹》</p>
+<p><a href="https://www.jianshu.com/p/296bacba3510" target="_blank" rel="noopener">NoSQL 还是 SQL ？这一篇讲清楚</a></p>
+
+    
+    </div>
+    
+    
+        <div class="article-comment" id="article-comment">
+            
+
+<h1>Comment</h1>
+
+  
+    <div id="valine"></div>
+  
+
+
+        </div>
+        
+</article>
+  </div>
+
+  
+
+<footer id="footer">
+    <div class="footer-copyright">
+        <div>
+            <p> Copyright by <a href>Li JunFeng </a> @ 2019</p>
+            <p>Designed by: <i class="fas fa-paint-brush"></i> <a href="https://moober.cn">Moober</a> and <i class="fas fa-graduation-cap"></i> <a href="https://qutang.github.io">Qu Tang</a> &bull; Theme: <a href="https://qutang.github.io/cutie/">Cutie 2.1.3-Taurus</a> &bull; Powered by <a href="http://hexo.io">Hexo.</a></p>
+        </div>
+    </div>
+    
+    <div class="footer-social">
+        
+            
+                
+                    <div class="footer-social-item"><a href="https://github.com/lijunfeng722" target="_blank"><i class="fab fa-github fa-2x" aria-hidden="true"></i></a></div>
+                
+            
+        
+    </div>
+</footer>
+
+  <br>
+
+  <div id="footer-nav" class='footer-nav'>
+		
+
+
+
+<nav id="nav">
+	
+	
+	
+	<div class="nav-item" id="nav-item-toc">
+		
+
+
+<div class="toc-container">
+<i class="far fa-times-circle" id="toc-close" onclick="closeTOC(event);" ontouchstart="closeTOC(event);"></i>
+<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一部分-概念"><span class="toc-number">1.</span> <span class="toc-text">第一部分 概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一章-为什么使用nosql"><span class="toc-number">1.1.</span> <span class="toc-text">第一章 为什么使用NoSQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二章-聚合数据模型"><span class="toc-number">1.2.</span> <span class="toc-text">第二章 聚合数据模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三章-数据模型详解"><span class="toc-number">1.3.</span> <span class="toc-text">第三章 数据模型详解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第四章-分布式模型"><span class="toc-number">1.4.</span> <span class="toc-text">第四章 分布式模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第五章-一致性"><span class="toc-number">1.5.</span> <span class="toc-text">第五章 一致性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第七章-映射-化简"><span class="toc-number">1.6.</span> <span class="toc-text">第七章 映射-化简</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不同nosql类型对比"><span class="toc-number">1.7.</span> <span class="toc-text">不同NoSQL类型对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#参考"><span class="toc-number">2.</span> <span class="toc-text">参考</span></a></li></ol>
+</div>
+<div class="toc-button" onclick="toggleTOC(event);" ontouchstart="toggleTOC(event);">
+    <img src="/images/icons/colorful-outlined/toc.svg" alt>
+</div>
+
+	</div>
+	
+	<div class="nav-item" id="nav-item-archive">
+		
+				<div class="nav-icon">
+				
+			<a href="/archives/" title="Archives">
+			<img src="/images/icons/colorful-outlined/archive.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-search">
+		
+		<div class="nav-icon">
+		
+			<a href="/search/" title="Search">
+			<img src="/images/icons/colorful-outlined/search.svg" alt>
+			</a>
+		</div>
+	</div>
+	<div class="nav-item" id="nav-item-more">
+		<div class="nav-icon">
+				<a href="#" onclick="onClickMenuIcon(event);" ontouchstart="onClickMenuIcon(event);">
+				<img src="/images/icons/colorful-outlined/menu.svg" alt>
+				</a>
+		</div>
+		<div class="nav-more-menu">
+				<i class="far fa-times-circle" id="nav-more-menu-close" onclick="onClickNavMenuClose(event);" ontouchstart="onClickNavMenuClose(event);"></i>
+		
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Java/">
+						<span>Java</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Boot/">
+						<span>Spring-boot</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/DataBase/">
+						<span>Database</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/消息队列/">
+						<span>消息队列</span>
+					</a>
+				</div>
+		</div>
+		
+		<div class="nav-more-item">
+				<div class="nav-name">
+					<a class="nav-link" href="/categories/Spring-Cloud/">
+						<span>Spring-cloud</span>
+					</a>
+				</div>
+		</div>
+		
+	</div>
+	</div>
+</nav>
+
+	</div>
+
+  
+
+
+
+    
+    
+    
+    
+<script>
+    new Valine({
+        el: '#valine',
+        notify:false, 
+        verify:false,
+        appId: 'V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz',
+        appKey: 'rWMxYnrvsMGqWwJFbczwXkPY',
+        placeholder: 'write your comment',
+        path:window.location.pathname, 
+        avatar:'retro',
+        lang: 'en'
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+  
+  // update cookie if this page is opened (directly)
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/post.v2.js'], 'post-version');
+  loadjs.ready('post-version', function(){
+    
+    new Postv2('hashit_3c141e0d5f84542893851facbf6d724c74fd89d22b46bef5c6ff23538b823971').update('hashit_e4879714545295b78192c52b309692d16c8d026fd7d5de1a5b52732205ee4b27', function(){});
+  });
+  
+</script>
+
+
+    
+<script type="text/javascript">
+  
+  // update cookie if this page is opened (directly)
+  function getIP(json) {
+  loadjs(['/libs/jshashes/hashes.min.js', '/libs/js-cookie/src/js.cookie.js', '/js/leancloud.js'], 'post-visit-comment-count');
+  loadjs.ready('post-visit-comment-count', function(){
+    
+    
+    LeanCloud.init('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+    var leanCloud = LeanCloud.getInstance();
+    leanCloud.fetchIsThumbUp('/2019/07/19/《NoSQL精粹》笔记/', json.ip);
+    document.getElementById('thumb-up-button').addEventListener('click', function(e){
+      leanCloud.isThumbUp('/2019/07/19/《NoSQL精粹》笔记/', function(isThumbUp){
+        console.log('is thumb up:' + isThumbUp);
+        if(isThumbUp){
+          leanCloud.removeThumbUpRecord('/2019/07/19/《NoSQL精粹》笔记/', json.ip);
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+          
+        }else{
+          leanCloud.addThumbUpRecord('/2019/07/19/《NoSQL精粹》笔记/', json.ip);
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }
+        leanCloud.getThumbUpCount('/2019/07/19/《NoSQL精粹》笔记/', function(count){
+            console.log('thumb up count: ' + count)
+            var el = document.getElementById('article-thumbup-count');
+            if(el) el.innerHTML = count;
+        });
+      });
+    });
+    leanCloud.addVisitRecord('/2019/07/19/《NoSQL精粹》笔记/', json.ip);
+    leanCloud.fetchCommentCount('/2019/07/19/《NoSQL精粹》笔记/');
+    leanCloud.fetchVisitCount('/2019/07/19/《NoSQL精粹》笔记/');
+    leanCloud.fetchThumbUpCount('/2019/07/19/《NoSQL精粹》笔记/');
+    leanCloud.getCommentCount('/2019/07/19/《NoSQL精粹》笔记/', function(count){
+        var el = document.querySelector('#article-comment-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getVisitCount('/2019/07/19/《NoSQL精粹》笔记/', function(count){
+        var el = document.querySelector('#article-visit-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.getThumbUpCount('/2019/07/19/《NoSQL精粹》笔记/', function(count){
+        var el = document.getElementById('article-thumbup-count');
+        if(el) el.innerHTML = count;
+    });
+    leanCloud.isThumbUp('/2019/07/19/《NoSQL精粹》笔记/', function(isThumbUp){
+        console.log('init thumb up:' + isThumbUp);
+        if(isThumbUp){
+          document.getElementById('thumb-up-icon').className = "fas fa-thumbs-up fa-lg";
+        }else{
+          document.getElementById('thumb-up-icon').className = "far fa-thumbs-up fa-lg";
+        }
+    });
+  });
+  }
+  
+</script>
+
+<script type="application/javascript" src="https://api.ipify.org?format=jsonp&callback=getIP"></script>
+
+
+
+<!-- <script src="/js/post.js"></script> -->
+
+<script src="/js/headroom.min.js"></script>
+
+<script data-no-instant type="text/javascript">
+
+initHeadroom();
+
+changeLayoutOnTouchScreen();
+
+// 
+// var post = new Post('V0jTkst5qpMeK7oHyQYwLB85-gzGzoHsz', 'rWMxYnrvsMGqWwJFbczwXkPY');
+// post.getCommentCount(window.location.pathname, function(count){
+//     $('#article-comment-count').text(count);
+// });
+// post.addVisitRecord(window.location.pathname, userip);
+// post.getVisitCount(window.location.pathname, function(count){
+//     $('#article-visit-count').text(count);
+// });
+
+// 
+</script>
+
+
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
